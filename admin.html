@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Operator — Unlock Code Manager</title>
+  <style>
+    :root{
+      --bg:#f6fbf6;
+      --card:#ffffff;
+      --accent:#2e7d32;
+      --accent-2:#43a047;
+      --muted:#64748b;
+      --danger:#c62828;
+      --glass: rgba(255,255,255,0.8);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#f0fff0,#f7fbf7);color:#0f172a}
+    header{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:white;padding:18px 16px;text-align:center;
+      box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    }
+    header h1{margin:0;font-size:1.05rem;letter-spacing:0.4px}
+    .wrap{max-width:980px;margin:26px auto;padding:0 16px}
+    .grid{display:grid;grid-template-columns:1fr 380px;gap:20px}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
+    .card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 6px 20px rgba(18,38,18,0.04)}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input[type="text"], select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef0;font-size:15px}
+    .row{display:flex;gap:10px}
+    .row > * {flex:1}
+    .btn{display:inline-block;padding:10px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
+    .btn-primary{background:var(--accent);color:white}
+    .btn-ghost{background:transparent;border:1px solid #e6eef0}
+    .btn-warn{background:#f59e0b;color:white}
+    .meta{font-size:13px;color:var(--muted);margin-top:8px}
+    .small{font-size:13px;color:var(--muted)}
+    .code-box{margin-top:12px;padding:12px;background:#f7fff7;border-radius:8px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .code-text{font-family:monospace;color:#064e3b}
+    table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+    th,td{padding:8px;border-bottom:1px solid #eef2f7;text-align:left}
+    th{background:#f8faf8;color:#0f172a;font-weight:700}
+    td .badge{padding:6px 8px;border-radius:8px;font-weight:700}
+    .badge-used{background:var(--danger);color:white}
+    .badge-active{background:#06b6d4;color:white}
+    .actions button{margin-right:8px}
+    .muted{color:var(--muted)}
+    .footer{margin-top:20px;font-size:13px;color:var(--muted);text-align:center}
+    .small-link{color:var(--accent);text-decoration:none}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🔐 Prometric — Operator Unlock Manager</h1>
+  </header>
+
+  <div class="wrap">
+    <div class="grid">
+      <!-- LEFT: Controls + Log -->
+      <div>
+        <div class="card">
+          <h3 style="margin:0 0 10px 0">Generate Unlock Code</h3>
+
+          <label>Module</label>
+          <select id="moduleSelect">
+            <option value="Pharmacology">Pharmacology</option>
+            <option value="Behavioral / Ethics">Behavioral / Ethics</option>
+            <option value="Critical Care">Critical Care</option>
+            <option value="Maternity & Obstetric">Maternity & Obstetric</option>
+            <option value="Fundamental Nursing">Fundamental Nursing</option>
+            <option value="Medical-Surgical">Medical-Surgical</option>
+          </select>
+
+          <div style="height:10px"></div>
+
+          <label>User name (optional)</label>
+          <input id="userName" type="text" placeholder="e.g. Giyono" />
+
+          <div style="height:10px"></div>
+
+          <label>User WhatsApp number</label>
+          <input id="userWA" type="text" placeholder="+62853xxxxxxxx (or 62853xxxxxxxx)" />
+
+          <div style="height:12px"></div>
+
+          <div style="display:flex;gap:10px">
+            <button id="genBtn" class="btn btn-primary">Generate Unlock Code</button>
+            <button id="copyAllBtn" class="btn btn-ghost">Export CSV</button>
+          </div>
+
+          <div class="code-box" id="codeBox" style="display:none">
+            <div>
+              <div class="small muted">New Code</div>
+              <div style="margin-top:6px" class="code-text" id="newCode">CODE1234</div>
+              <div class="meta">Click <strong>Send</strong> to open WhatsApp for the user or <strong>Copy</strong> to copy the code.</div>
+            </div>
+            <div style="text-align:right">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <button id="copyBtn" class="btn">Copy</button>
+                <button id="sendBtn" class="btn btn-warn">Send via WhatsApp</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px;overflow:auto">
+          <h3 style="margin:0 0 10px 0">Generated Codes Log</h3>
+          <div class="small muted">Records persist in your browser (localStorage).</div>
+          <table id="logTable" style="margin-top:10px">
+            <thead>
+              <tr><th>User</th><th>WhatsApp</th><th>Module</th><th>Code</th><th>When</th><th>Status</th><th>Action</th></tr>
+            </thead>
+            <tbody id="logBody"></tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Info / Help -->
+      <div>
+        <div class="card">
+          <h3 style="margin:0 0 10px 0">Operator Tools</h3>
+          <p class="small muted">Use this page to create a one-time unlock code and send it to the candidate's WhatsApp. Codes are unique and stored locally.</p>
+          <hr style="margin:12px 0" />
+          <h4 style="margin:6px 0">WhatsApp send format</h4>
+          <div class="small muted">
+            Message that will be opened in WhatsApp for the <strong>user's number</strong>:
+            <pre style="background:#f8faf8;padding:8px;border-radius:6px;border:1px solid #eef6ee;margin-top:8px">
+Here’s your unlock code for {Module}: {CODE}
+Enter it in the Prometric Test site to unlock all modules.
+Questions? Contact admin +6285399652487
+            </pre>
+          </div>
+
+          <hr style="margin:12px 0" />
+          <h4 style="margin:6px 0">Tips</h4>
+          <ul style="padding-left:18px;color:var(--muted)">
+            <li>Make sure the user's WhatsApp number is correct (without spaces).</li>
+            <li>After user finishes the test, mark the code <strong>Used</strong> in the table.</li>
+            <li>To revoke a code, click <em>Mark Used</em>; it cannot be used again.</li>
+          </ul>
+        </div>
+
+        <div style="height:16px"></div>
+
+        <div class="card">
+          <h3 style="margin:0 0 10px 0">Quick Actions</h3>
+          <div style="display:flex;gap:8px;flex-direction:column">
+            <button id="clearBtn" class="btn btn-ghost">Clear All Logs</button>
+            <button id="reloadBtn" class="btn btn-ghost">Reload Records</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">Prometric — GyouTrain Lab · Admin panel (local only)</div>
+  </div>
+
+<script>
+  // ---------- storage & helpers ----------
+  const STORAGE_KEY = "gyoutrain_unlock_codes_v1";
+
+  function loadRecords(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch(e){
+      console.error("Failed to parse storage", e);
+      return [];
+    }
+  }
+
+  function saveRecords(arr){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+  }
+
+  function formatTime(ts){
+    const d = new Date(ts);
+    return d.toLocaleString();
+  }
+
+  function sanitizeNumber(n){
+    if(!n) return "";
+    // remove spaces, plus signs and non digits - whatsapp requires numeric without "+"
+    return n.replace(/\D/g,'');
+  }
+
+  // ---------- code generation ----------
+  function prefixFromModule(module){
+    const map = {
+      "Pharmacology":"PH",
+      "Behavioral / Ethics":"BE",
+      "Critical Care":"CR",
+      "Maternity & Obstetric":"MA",
+      "Fundamental Nursing":"FN",
+      "Medical-Surgical":"MS"
+    };
+    return map[module] || "XX";
+  }
+
+  function randomSegment(len=5){
+    const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ"; // avoid ambiguous chars
+    let s="";
+    for(let i=0;i<len;i++) s += chars.charAt(Math.floor(Math.random()*chars.length));
+    return s;
+  }
+
+  function makeUniqueCode(module){
+    const prefix = prefixFromModule(module);
+    const records = loadRecords();
+    let code;
+    do {
+      code = `${prefix}-${randomSegment(5)}`;
+    } while(records.some(r=>r.code===code));
+    return code;
+  }
+
+  // ---------- UI wiring ----------
+  const genBtn = document.getElementById("genBtn");
+  const moduleSelect = document.getElementById("moduleSelect");
+  const userNameInput = document.getElementById("userName");
+  const userWAInput = document.getElementById("userWA");
+  const codeBox = document.getElementById("codeBox");
+  const newCodeEl = document.getElementById("newCode");
+  const copyBtn = document.getElementById("copyBtn");
+  const sendBtn = document.getElementById("sendBtn");
+  const logBody = document.getElementById("logBody");
+  const copyAllBtn = document.getElementById("copyAllBtn");
+  const clearBtn = document.getElementById("clearBtn");
+  const reloadBtn = document.getElementById("reloadBtn");
+
+  function renderLogs(){
+    const recs = loadRecords().slice().reverse(); // newest first
+    logBody.innerHTML = "";
+    recs.forEach(r=>{
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${r.user||'<span class="muted">-</span>'}</td>
+        <td>${r.wa?('+'+sanitizeNumber(r.wa)): '<span class="muted">-</span>'}</td>
+        <td>${r.module}</td>
+        <td style="font-family:monospace">${r.code}</td>
+        <td>${formatTime(r.ts)}</td>
+        <td>${r.used ? '<span class="badge badge-used">Used</span>' : '<span class="badge badge-active">Active</span>'}</td>
+        <td class="actions">
+          ${r.used ? '' : `<button class="btn btn-ghost" data-code="${r.code}" onclick="markUsed(this.dataset.code)">Mark Used</button>`}
+          <button class="btn btn-ghost" data-code="${r.code}" onclick="copyLogCode(this.dataset.code)">Copy</button>
+        </td>
+      `;
+      logBody.appendChild(tr);
+    });
+  }
+
+  function addRecord(user,wa,module,code){
+    const recs = loadRecords();
+    const rec = { user, wa, module, code, ts: Date.now(), used:false };
+    recs.push(rec);
+    saveRecords(recs);
+    renderLogs();
+  }
+
+  function markUsed(code){
+    const recs = loadRecords();
+    const idx = recs.findIndex(r=>r.code===code);
+    if(idx>=0){
+      recs[idx].used = true;
+      saveRecords(recs);
+      renderLogs();
+      alert('Code marked as USED.');
+    }
+  }
+
+  function copyLogCode(code){
+    navigator.clipboard.writeText(code).then(()=>alert('Code copied: '+code));
+  }
+
+  // event: generate
+  genBtn.addEventListener('click',()=>{
+    const module = moduleSelect.value;
+    const user = userNameInput.value.trim();
+    const waRaw = userWAInput.value.trim();
+
+    if(!waRaw){
+      if(!confirm('No WhatsApp number provided. Continue and generate code?')) return;
+    }
+
+    const code = makeUniqueCode(module);
+    newCodeEl.textContent = code;
+    codeBox.style.display = 'flex';
+    addRecord(user, waRaw, module, code);
+  });
+
+  copyBtn.addEventListener('click', ()=>{
+    const code = newCodeEl.textContent;
+    if(!code) return alert('No code to copy.');
+    navigator.clipboard.writeText(code).then(()=>alert('Code copied: '+code));
+  });
+
+  sendBtn.addEventListener('click', ()=>{
+    const code = newCodeEl.textContent;
+    const module = moduleSelect.value;
+    const user = userNameInput.value.trim();
+    let wa = userWAInput.value.trim();
+    if(!code) return alert('Generate a code first.');
+    if(!wa) return alert('Please enter the user WhatsApp number before sending.');
+
+    // sanitize number for wa.me link: remove non-digit characters and leading +
+    wa = sanitizeNumber(wa);
+    if(!wa) return alert('Invalid WhatsApp number.');
+
+    const message = `Here’s your unlock code for ${module}: ${code}\n\nEnter it on the Prometric Test site to unlock your module.\nIf you have questions, contact admin: +6285399652487`;
+    const waUrl = `https://wa.me/${wa}?text=${encodeURIComponent(message)}`;
+    window.open(waUrl,'_blank');
+  });
+
+  // export CSV
+  copyAllBtn.addEventListener('click', ()=>{
+    const recs = loadRecords();
+    if(!recs.length) return alert('No records to export.');
+    const header = ['user','wa','module','code','timestamp','used'];
+    const csv = [header.join(',')].concat(recs.map(r =>
+      [ `"${(r.user||'')}"`, `"${(r.wa||'')}"`, `"${r.module}"`, `"${r.code}"`, `"${new Date(r.ts).toISOString()}"`, `${r.used}` ].join(',')
+    )).join('\n');
+
+    // download
+    const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'unlock_codes.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  clearBtn.addEventListener('click', ()=>{
+    if(!confirm('Clear all saved records? This cannot be undone.')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    renderLogs();
+  });
+
+  reloadBtn.addEventListener('click', ()=>renderLogs());
+
+  // initial render
+  renderLogs();
+
+</script>
+</body>
+</html>
