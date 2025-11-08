@@ -1,8 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🩺 Nursing Prometric Test Hub</title>
+<style>
+  body {font-family: Arial, sans-serif; background:#f9fafc; text-align:center; margin:0; padding:0;}
+  h1 {background:#004aad; color:white; padding:15px;}
+  p {color:#333;}
+  .module {margin:10px auto; padding:12px 20px; width:80%; max-width:300px; border-radius:10px; cursor:pointer;}
+  .active {background:#004aad; color:white;}
+  .locked {background:#f8d7da; color:#a00; cursor:not-allowed;}
+  footer {margin-top:30px; color:#777;}
+  img {margin-top:10px; width:60px;}
+</style>
+</head>
+<body>
+<h1>🩺 Nursing Prometric Test Hub</h1>
+<p>Select Your Test Module</p>
+
+<div id="modules">
+  <div class="module active" onclick="window.location.href='https://gyoutrain-lab.github.io/nursing-prometric-test-pediatric/'">Pediatric Nursing</div>
+  <div class="module locked" onclick="requestUnlock('Pharmacology')">Pharmacology</div>
+  <div class="module locked" onclick="requestUnlock('Behavioral / Ethics')">Behavioral / Ethics</div>
+  <div class="module locked" onclick="requestUnlock('Critical Care')">Critical Care</div>
+  <div class="module locked" onclick="requestUnlock('Maternity & Obstetric')">Maternity & Obstetric</div>
+  <div class="module locked" onclick="requestUnlock('Fundamental Nursing')">Fundamental Nursing</div>
+  <div class="module locked" onclick="requestUnlock('Medical-Surgical')">Medical-Surgical</div>
+</div>
+
+<footer>
+  <p>Nursing Excellence and Career Begin Here</p>
+  <p>Connect with us: <a href="https://wa.me/6285399652487">WhatsApp</a> | Facebook</p>
+  <p>© 2025 GyouTrain Lab</p>
+  <img src="assets/icon17 (1).jpg" alt="Icon">
+</footer>
+
+<!-- Unlock Code Modal -->
+<div id="unlockModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
+  <div style="background:white; padding:20px; border-radius:10px; width:90%; max-width:350px; text-align:left;">
+    <h3>Enter Unlock Code</h3>
+    <p>Enter the unlock code you received via WhatsApp after payment:</p>
+    <input id="unlockCode" placeholder="Enter code" style="width:100%; padding:8px;"><br><br>
+    <button onclick="verifyCode()" style="background:#004aad;color:white;padding:8px 15px;border:none;border-radius:5px;">Unlock</button>
+    <button onclick="closeModal()" style="background:#ccc;padding:8px 15px;border:none;border-radius:5px;">Cancel</button>
+  </div>
+</div>
+
 <script>
 const REPO_OWNER = "gyoutrain-lab";
 const REPO_NAME = "prometric-nursing-test-management";
 const FILE_PATH = "codes.json";
-const PROXY_URL = "https://script.google.com/macros/s/AKfycbxJ9xxxxxx/exec"; // your Apps Script URL
 
 // --- Triggered when user clicks locked module ---
 function requestUnlock(moduleName) {
@@ -28,19 +76,7 @@ async function verifyCode(){
     localStorage.setItem("unlocked","true");
     closeModal();
     renderModules(true);
-
-    // --- mark code as used ---
-    try {
-      await fetch(PROXY_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code })
-      });
-      console.log("Code marked as used.");
-    } catch(err){
-      console.error("Failed to update GitHub:", err);
-    }
-
+    // Optional: mark code as used (admin token required via backend)
   } else {
     alert("❌ Invalid or already used code.");
   }
@@ -70,3 +106,5 @@ window.onload = ()=>{
   renderModules(unlocked);
 }
 </script>
+</body>
+</html>
