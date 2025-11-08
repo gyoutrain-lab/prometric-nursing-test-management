@@ -1,44 +1,142 @@
-const businessWA = "+6285399652487";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nursing Prometric Test Hub</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: Arial, sans-serif; background-color:#f2f3f4; color:#333; display:flex; flex-direction:column; align-items:center; min-height:100vh; }
 
-// Example: codes mapped to WhatsApp numbers (you generate manually)
-const validCodes = {
-  "UNLOCK001": "+628123456789", // Code for user1 after payment
-  "UNLOCK002": "+628987654321", // Code for user2
-};
+    header {
+      width:100%;
+      height:50vh;
+      background: url('assets/water-drop-bg.jpg') no-repeat center center;
+      background-size: cover;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      color:white;
+    }
 
-let unlockedModules = JSON.parse(localStorage.getItem('unlockedModules') || "{}");
+    header::after {
+      content:"";
+      position:absolute;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.35);
+    }
 
-function lockModule(moduleName, url) {
-  if (unlockedModules[moduleName]) {
-    window.location.href = url;
-    return;
-  }
+    header h1, header h2 {
+      position: relative;
+      z-index: 1;
+    }
 
-  alert(`The "${moduleName}" module is locked.\n\nTo unlock:  
-1️⃣ Contact us on WhatsApp.  
-2️⃣ Transfer IDR 200k via OVO to ${businessWA}.  
-3️⃣ After we verify your payment, we will send you a unique unlock code.`);
+    header h1 { font-size:2.2rem; margin-bottom:0.5rem; }
+    header h2 { font-size:1.3rem; font-weight:normal; }
 
-  // Open WhatsApp pre-filled message
-  const waMessage = encodeURIComponent(`Hello, I want to unlock the "${moduleName}" nursing test module and I agree to transfer IDR 200k via OVO to ${businessWA}.`);
-  window.open(`https://wa.me/${businessWA}?text=${waMessage}`, "_blank");
+    .dashboard {
+      width:90%;
+      max-width:500px;
+      display:flex;
+      flex-direction:column;
+      gap:1rem;
+      margin:2rem 0;
+    }
 
-  // Ask user for WhatsApp number
-  const userWA = prompt("Enter your WhatsApp number used to contact us (include country code, e.g., +628123456789):");
-  if (!userWA) return alert("No WhatsApp number entered. Module remains locked.");
+    .dashboard button {
+      padding:1rem;
+      font-size:1rem;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      background-color:#4a90e2;
+      color:white;
+      transition: background 0.3s;
+    }
 
-  // Ask for the unlock code (sent manually by you after checking OVO)
-  const code = prompt("Enter the unlock code you received via WhatsApp after payment:");
-  if (!code) return alert("No code entered. Module remains locked.");
+    .dashboard button:hover { background-color:#357ABD; }
 
-  // Verify code matches the WhatsApp number
-  if (validCodes[code] === userWA) {
-    unlockedModules[moduleName] = true;          // unlock for this user
-    localStorage.setItem('unlockedModules', JSON.stringify(unlockedModules));
-    alert(`✅ "${moduleName}" unlocked! Redirecting now...`);
-    delete validCodes[code];                     // prevent reuse
-    window.location.href = url;
-  } else {
-    alert("❌ Invalid code or WhatsApp number. Please contact us to get a valid unlock code.");
-  }
-}
+    .footer-section {
+      text-align:center;
+      margin-bottom:2rem;
+    }
+
+    .footer-section p { margin:0.5rem 0; }
+
+    .footer-section a {
+      color:#4a90e2;
+      text-decoration:none;
+      margin:0 5px;
+    }
+
+    footer { padding:1rem; font-size:0.9rem; color:#777; text-align:center; }
+
+    @media (max-width:480px) {
+      header h1 { font-size:1.8rem; }
+      header h2 { font-size:1rem; }
+      .dashboard button { font-size:0.9rem; padding:0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🩺 Nursing Prometric Test Hub</h1>
+    <h2>Select Your Test Module</h2>
+  </header>
+
+  <div class="dashboard">
+    <!-- Only Pediatric Nursing accessible -->
+    <button onclick="window.location.href='https://gyoutrain-lab.github.io/nursing-prometric-test-pediatric/'">Pediatric Nursing</button>
+
+    <!-- Other modules require unlock -->
+    <button onclick="lockModule('Pharmacology', 'https://gyoutrain-lab.github.io/nursing-prometric-test-pharmacology/')">Pharmacology</button>
+    <button onclick="lockModule('Fundamental Nursing', 'https://gyoutrain-lab.github.io/nursing-prometric-test/')">Fundamental Nursing</button>
+    <button onclick="lockModule('Behavioral / Ethics', 'https://gyoutrain-lab.github.io/nursing-prometric-test-eticabehabior/')">Behavioral / Ethics</button>
+    <button onclick="lockModule('Critical Care', 'https://gyoutrain-lab.github.io/nursing-prometric-test-criticalcare2/')">Critical Care</button>
+    <button onclick="lockModule('Maternity & Obstetric', 'https://gyoutrain-lab.github.io/nursing-prometric-test-maternityobstetric/')">Maternity & Obstetric</button>
+    <button onclick="lockModule('Medical-Surgical', 'https://gyoutrain-lab.github.io/nursing-prometric-test-medical-surgical/')">Medical-Surgical</button>
+  </div>
+
+  <div class="footer-section">
+    <p><strong>Nursing Excellence and Career Begin Here</strong></p>
+    <p>Connect with us: 
+      <a href="https://wa.me/+6285399652487" target="_blank">WhatsApp</a> | 
+      <a href="https://web.facebook.com/gyouskill/?_rdc=1&_rdr#" target="_blank">Facebook</a>
+    </p>
+  </div>
+
+  <footer>
+    &copy; 2025 GyouTrain Lab
+  </footer>
+
+  <script>
+    const businessWA = "+6285399652487";
+
+    function lockModule(moduleName, url) {
+      alert(`The "${moduleName}" module is locked.\n\nTo unlock, please contact us via WhatsApp.`);
+
+      const waMessage = encodeURIComponent(`Hello, I want to unlock the "${moduleName}" nursing test module.`);
+      window.open(`https://wa.me/${businessWA}?text=${waMessage}`, "_blank");
+
+      const code = prompt("Enter the unlock code you received via WhatsApp:");
+      if(!code) {
+        alert("No code entered. Module remains locked.");
+        return;
+      }
+
+      // Example: only accept code 'UNLOCK123' for demonstration
+      if(code === "UNLOCK123") {
+        alert(`✅ "${moduleName}" unlocked! Redirecting now...`);
+        window.location.href = url;
+      } else {
+        alert("❌ Invalid code. Please contact us to get a valid unlock code.");
+      }
+    }
+  </script>
+
+</body>
+</html>
