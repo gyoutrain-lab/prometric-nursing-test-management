@@ -1,87 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Nursing Prometric Test Hub</title>
-<link rel="icon" href="assets/icon17 (1).jpg" />
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom, #ffffff, #e8f0f7);
-    text-align: center;
-    padding: 10px;
-  }
-  h1 {
-    font-size: 1.5em;
-    color: #004080;
-    margin-top: 20px;
-  }
-  h2 {
-    color: #004080;
-    margin-bottom: 20px;
-  }
-  .button {
-    display: block;
-    width: 90%;
-    max-width: 300px;
-    margin: 10px auto;
-    padding: 15px;
-    font-size: 1.1em;
-    border: none;
-    border-radius: 10px;
-    color: #fff;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  .active {
-    background-color: #004080;
-  }
-  .locked {
-    background-color: #e68a8a; /* pale red */
-    cursor: not-allowed;
-  }
-  .footer {
-    margin-top: 30px;
-    font-size: 0.9em;
-    color: #333;
-  }
-  .image-section {
-    margin-top: 20px;
-    background: url('assets/icon17 (1).jpg') center/contain no-repeat;
-    height: 200px;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nursing Prometric Test Hub</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url("assets/water-drop-bg.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      text-align: center;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.6);
+      margin: 20px;
+      padding: 20px;
+      border-radius: 20px;
+    }
+
+    img.icon {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin-top: 15px;
+    }
+
+    h1 {
+      font-size: 1.8em;
+      color: #ff4f4f;
+      margin: 10px 0;
+    }
+
+    h2 {
+      font-size: 1.2em;
+      margin: 10px 0 25px 0;
+      color: #fff;
+    }
+
+    button {
+      display: block;
+      width: 80%;
+      margin: 10px auto;
+      padding: 15px;
+      font-size: 1.1em;
+      font-weight: bold;
+      color: white;
+      background-color: #0052cc;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #003d99;
+    }
+
+    button.locked {
+      background-color: #b34d4d; /* pale red */
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 0.9em;
+    }
+
+    a {
+      color: #ffd6d6;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .unlock-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    input {
+      padding: 8px;
+      width: 70%;
+      border-radius: 8px;
+      border: none;
+      font-size: 1em;
+    }
+
+    .unlock-btn {
+      background-color: #00a859;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <img src="assets/icon17 (1).jpg" alt="Icon" class="icon">
+    <h1>🩺 Nursing Prometric Test Hub</h1>
+    <h2>Select Your Test Module</h2>
 
-<h1>🩺 Nursing Prometric Test Hub</h1>
-<h2>Select Your Test Module</h2>
+    <!-- Active / Unlocked -->
+    <button onclick="openModule('https://gyoutrain-lab.github.io/nursing-prometric-test-pediatric/')">
+      Pediatric Nursing
+    </button>
 
-<!-- Test buttons -->
-<button class="button active" onclick="location.href='pediatric.html'">Pediatric Nursing</button>
-<button class="button locked" onclick="lockedMsg('Pharmacology')">Pharmacology</button>
-<button class="button locked" onclick="lockedMsg('Behavioral / Ethics')">Behavioral / Ethics</button>
-<button class="button locked" onclick="lockedMsg('Critical Care')">Critical Care</button>
-<button class="button locked" onclick="lockedMsg('Maternity & Obstetric')">Maternity & Obstetric</button>
-<button class="button locked" onclick="lockedMsg('Fundamental Nursing')">Fundamental Nursing</button>
-<button class="button locked" onclick="lockedMsg('Medical-Surgical')">Medical-Surgical</button>
+    <!-- Locked Modules -->
+    <button class="locked" onclick="requestUnlock('Pharmacology')">Pharmacology</button>
+    <button class="locked" onclick="requestUnlock('Behavioral / Ethics')">Behavioral / Ethics</button>
+    <button class="locked" onclick="requestUnlock('Critical Care')">Critical Care</button>
+    <button class="locked" onclick="requestUnlock('Maternity & Obstetric')">Maternity & Obstetric</button>
+    <button class="locked" onclick="requestUnlock('Fundamental Nursing')">Fundamental Nursing</button>
+    <button class="locked" onclick="requestUnlock('Medical-Surgical')">Medical-Surgical</button>
 
-<div class="image-section"></div>
+    <div class="unlock-box">
+      <p><strong>Have you received an unlock code?</strong></p>
+      <input type="text" id="unlockCode" placeholder="Enter your unlock code">
+      <button class="unlock-btn" onclick="unlockModules()">Unlock Modules</button>
+    </div>
 
-<p>Nursing Excellence and Career Begin Here</p>
-<p>Connect with us:
-  <a href="https://wa.me/6285399652487?text=Hello%20I%20want%20to%20unlock%20the%20next%20Nursing%20Prometric%20Test%20Module" target="_blank">WhatsApp</a> |
-  <a href="https://web.facebook.com/gyouskill/?_rdc=1&_rdr#" target="_blank">Facebook</a>
-</p>
+    <div class="footer">
+      <p>Nursing Excellence and Career Begin Here</p>
+      <p>Connect with us:
+        <a href="https://wa.me/6285399652487?text=Hello%20I%20want%20to%20unlock%20the%20Nursing%20Test%20modules%20please.">WhatsApp</a> |
+        <a href="#">Facebook</a>
+      </p>
+      <p>© 2025 GyouTrain Lab</p>
+    </div>
+  </div>
 
-<p class="footer">© 2025 GyouTrain Lab</p>
+  <script>
+    function openModule(url) {
+      window.location.href = url;
+    }
 
-<script>
-function lockedMsg(moduleName) {
-  alert("🔒 " + moduleName + " module is locked.\n\nTo unlock all modules:\n1️⃣ Contact WhatsApp +6285399652487\n2️⃣ Transfer IDR 200k via OVO.\n3️⃣ You'll receive your unlock code after confirmation.");
-}
-</script>
+    function requestUnlock(moduleName) {
+      const message =
+        `Hello, I want to unlock the "${moduleName}" nursing test module.\n\n` +
+        `If you agree, please transfer *IDR 200k* via OVO to +6285399652487.\n` +
+        `After payment, send a message with your OVO confirmation here, and you’ll receive your unlock code.`;
+      const waUrl = `https://wa.me/6285399652487?text=${encodeURIComponent(message)}`;
+      window.open(waUrl, '_blank');
+    }
 
+    function unlockModules() {
+      const code = document.getElementById("unlockCode").value.trim();
+      // Example simple check (replace later with real system)
+      if (code === "GYOU2025PASS") {
+        document.querySelectorAll(".locked").forEach(btn => {
+          btn.classList.remove("locked");
+          btn.style.backgroundColor = "#0052cc";
+          btn.style.cursor = "pointer";
+          btn.onclick = function() {
+            const name = this.innerText.trim();
+            let target = "";
+            switch (name) {
+              case "Pharmacology":
+                target = "https://gyoutrain-lab.github.io/nursing-prometric-test-pharmacology/";
+                break;
+              case "Behavioral / Ethics":
+                target = "https://gyoutrain-lab.github.io/nursing-prometric-test-eticabehabior/";
+                break;
+              case "Critical Care":
+                target = "https://gyoutrain-lab.github.io/nursing-prometric-test-criticalcare2/";
+                break;
+              case "Maternity & Obstetric":
+                target = "https://gyoutrain-lab.github.io/nursing-prometric-test-maternityobstetric/";
+                break;
+              case "Fundamental Nursing":
+                target = "https://gyoutrain-lab.github.io/nursing-prometric-test/";
+                break;
+              case "Medical-Surgical":
+                target = "https://gyoutrain-lab.github.io/nursing-prometric-test-medical-surgical/";
+                break;
+            }
+            if (target) window.location.href = target;
+          };
+        });
+        alert("✅ Modules successfully unlocked!");
+      } else {
+        alert("❌ Invalid code. Please contact support.");
+      }
+    }
+  </script>
 </body>
 </html>
