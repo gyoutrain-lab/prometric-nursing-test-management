@@ -1,240 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Nursing Prometric Test Hub</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🩺 Nursing Prometric Test Hub</title>
+  <link rel="manifest" href="manifest.json" />
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Arial,Helvetica,sans-serif;background:#f2f3f4;color:#222;min-height:100vh;display:flex;flex-direction:column;align-items:center}
-    header{width:100%;height:50vh;background:url('assets/water-drop-bg.jpg') center/cover no-repeat;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#fff;text-align:center}
-    header::after{content:"";position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.35)}
-    header h1, header h2{position:relative;z-index:1}
-    header h1{font-size:2.2rem;margin-bottom:.4rem}
-    header h2{font-size:1.1rem;font-weight:400}
-    .container{width:90%;max-width:620px;margin-top:1.5rem}
-    .grid{display:grid;grid-template-columns:1fr;gap:12px}
-    .btn{background:#4a90e2;color:#fff;border:none;padding:14px;border-radius:10px;font-size:1rem;cursor:pointer}
-    .btn:active{transform:translateY(1px)}
-    .note{margin:14px 0;color:#444;text-align:center}
-    .footer{margin-top:auto;padding:18px 10px 40px;color:#666;text-align:center;font-size:0.95rem}
-    .small{font-size:.9rem;color:#666}
-    /* admin panel button bottom-right */
-    #admin-toggle { position: fixed; right: 12px; bottom: 12px; z-index: 9999; background:#222; color:#fff; border-radius:10px; padding:8px 12px; border:none; }
-    /* admin modal */
-    #admin-modal { display:none; position: fixed; right: 12px; bottom: 60px; z-index:10000; width:320px; background:#fff; color:#222; border-radius:10px; padding:12px; box-shadow:0 8px 30px rgba(0,0,0,.2); }
-    #admin-modal input, #admin-modal select { width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #ddd; }
-    #admin-modal .row { display:flex; gap:8px }
-    #last-code { background:#fafafa;border:1px dashed #ddd;padding:8px;border-radius:6px;font-size:0.95rem; word-break:break-all }
-    @media (max-width:480px){ header h1{font-size:1.6rem} header h2{font-size:1rem} .btn{padding:12px;font-size:.95rem} #admin-modal{width:90%;left:5%;right:5%;bottom:60px} }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: url("assets/water-drop-bg.jpg") no-repeat center center/cover;
+      color: white;
+      text-align: center;
+    }
+    .overlay {
+      background: rgba(0, 0, 0, 0.5);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-weight: 400;
+      color: #e0e0e0;
+    }
+    .modules {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .card:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .locked {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .footer {
+      margin-top: 50px;
+      font-size: 14px;
+      color: #ccc;
+    }
   </style>
 </head>
 <body>
-
-  <header>
+  <div class="overlay">
+    <img src="assets/icon17 (1).jpg" alt="Icon" width="80" style="border-radius:50%; margin-bottom:10px;" />
     <h1>🩺 Nursing Prometric Test Hub</h1>
     <h2>Select Your Test Module</h2>
-  </header>
 
-  <div class="container">
-    <div class="grid">
-      <!-- Pediatric free -->
-      <button class="btn" onclick="openModule('pediatric')">Pediatric Nursing</button>
-
-      <!-- locked modules -->
-      <button class="btn" onclick="startUnlock('pharmacology','https://gyoutrain-lab.github.io/nursing-prometric-test-pharmacology/')">Pharmacology (locked)</button>
-      <button class="btn" onclick="startUnlock('fundamental','https://gyoutrain-lab.github.io/nursing-prometric-test/')">Fundamental Nursing (locked)</button>
-      <button class="btn" onclick="startUnlock('behavioral','https://gyoutrain-lab.github.io/nursing-prometric-test-eticabehabior/')">Behavioral / Ethics (locked)</button>
-      <button class="btn" onclick="startUnlock('criticalcare','https://gyoutrain-lab.github.io/nursing-prometric-test-criticalcare2/')">Critical Care (locked)</button>
-      <button class="btn" onclick="startUnlock('maternity','https://gyoutrain-lab.github.io/nursing-prometric-test-maternityobstetric/')">Maternity & Obstetric (locked)</button>
-      <button class="btn" onclick="startUnlock('medicalsurgical','https://gyoutrain-lab.github.io/nursing-prometric-test-medical-surgical/')">Medical-Surgical (locked)</button>
+    <div class="modules">
+      <div class="card" onclick="openTest('pediatric')">Pediatric Nursing</div>
+      <div class="card locked" onclick="openTest('pharmacology')">Pharmacology</div>
+      <div class="card locked" onclick="openTest('behavioral')">Behavioral / Ethics</div>
+      <div class="card locked" onclick="openTest('critical')">Critical Care</div>
+      <div class="card locked" onclick="openTest('maternity')">Maternity & Obstetric</div>
+      <div class="card locked" onclick="openTest('fundamental')">Fundamental Nursing</div>
+      <div class="card locked" onclick="openTest('medical')">Medical-Surgical</div>
     </div>
 
-    <p class="note"><strong>Nursing Excellence and Career Begin Here</strong></p>
-    <p style="text-align:center">Connect with us: <a href="https://wa.me/+6285399652487" target="_blank">WhatsApp</a> | <a href="https://web.facebook.com/gyouskill/?_rdc=1&_rdr#" target="_blank">Facebook</a></p>
-  </div>
-
-  <div class="footer">
-    &copy; 2025 GyouTrain Lab
-  </div>
-
-  <!-- Admin toggle -->
-  <button id="admin-toggle" title="Admin panel (PIN)">Admin</button>
-
-  <!-- Admin modal -->
-  <div id="admin-modal" aria-hidden="true">
-    <div style="text-align:right"><button id="admin-close" style="border:none;background:transparent;font-size:18px;cursor:pointer">✕</button></div>
-    <h3 style="margin:6px 0">Admin — Generate unlock</h3>
-
-    <label class="small">Enter admin PIN</label>
-    <input id="admin-pin" type="password" placeholder="PIN">
-
-    <div id="admin-body" style="display:none">
-      <label class="small">Buyer WhatsApp (include +)</label>
-      <input id="admin-phone" placeholder="+628....">
-
-      <label class="small">Select modules to unlock</label>
-      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:8px">
-        <label><input type="checkbox" class="admin-mod" value="pharmacology" checked> Pharmacology</label>
-        <label><input type="checkbox" class="admin-mod" value="fundamental" checked> Fundamental Nursing</label>
-        <label><input type="checkbox" class="admin-mod" value="behavioral" checked> Behavioral / Ethics</label>
-        <label><input type="checkbox" class="admin-mod" value="criticalcare" checked> Critical Care</label>
-        <label><input type="checkbox" class="admin-mod" value="maternity" checked> Maternity & Obstetric</label>
-        <label><input type="checkbox" class="admin-mod" value="medicalsurgical" checked> Medical-Surgical</label>
-      </div>
-
-      <div class="row">
-        <button id="generate" class="btn" style="flex:1">Generate Code</button>
-        <button id="export" class="btn" style="background:#fff;color:#222;border:1px solid #ddd">Export</button>
-      </div>
-
-      <p style="margin-top:10px;font-size:.95rem"><strong>Last code:</strong></p>
-      <div id="last-code">—</div>
-
-      <div style="display:flex;gap:8px;margin-top:10px">
-        <button id="copy" class="btn" style="background:#2ecc71;flex:1">Copy</button>
-        <button id="sendwa" class="btn" style="background:#25D366;flex:1">Open WA</button>
-      </div>
-
-      <p style="font-size:.85rem;color:#555;margin-top:12px">After OVO payment confirm, generate code and send to buyer. Then ADD the same code into the <code>validCodes</code> mapping in this file (see instructions below) so the buyer's code will be accepted on the site.</p>
+    <div class="footer">
+      <p>Nursing Excellence and Career Begin Here</p>
+      <p>Connect with us: <a href="https://wa.me/6285399652487?text=Hello, I%20want%20to%20unlock%20a%20test%20module" target="_blank" style="color: #80dfff;">WhatsApp</a></p>
+      <p>© 2025 GyouTrain Lab</p>
     </div>
   </div>
 
-<script>
-/* ===========================
-   Static-mode code verification
-   - validCodes MUST contain code -> phone mapping
-   - After admin generates code and sends to buyer, you must add this code into validCodes (see below)
-   =========================== */
+  <script>
+    // only Pediatric unlocked
+    function openTest(module) {
+      if (module === "pediatric") {
+        window.location.href = "https://gyoutrain-lab.github.io/prometric-nursing-test/";
+        return;
+      }
 
-const validCodes = {
-  // Example: add codes here to enable them on the site.
-  // "UNLOCK001": "+628123456789"
-  // After payment: add "THE-GENERATED-CODE": "+62..buyer" and push commit to GitHub.
-};
-
-/* ----- simple helper ----- */
-function openModule(key){
-  // direct pediatric link (open)
-  if(key === 'pediatric'){
-    window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test-pediatric/';
-    return;
-  }
-}
-
-/* ----- start unlock flow for locked modules ----- */
-async function startUnlock(moduleKey, redirectUrl){
-  // show instructions and open WA
-  const confirmMsg = `This module is locked.\n\nTo unlock:\n1) Transfer IDR 200,000 via OVO to +6285399652487\n2) After payment, contact us on WhatsApp and we will send your unlock code.`;
-  alert(confirmMsg);
-
-  const waMsg = encodeURIComponent(`Hello, I want to unlock the "${moduleKey}" nursing test module. I will transfer IDR 200,000 via OVO to +6285399652487.`);
-  window.open(`https://wa.me/6285399652487?text=${waMsg}`, '_blank');
-
-  // ask for buyer WA number and code
-  const userPhone = prompt("Enter your WhatsApp number used to contact us (include +):");
-  if(!userPhone){ alert('No phone number entered.'); return; }
-
-  const code = prompt("Enter the unlock code you received via WhatsApp after payment:");
-  if(!code){ alert('No code entered.'); return; }
-
-  // verify against validCodes mapping
-  if(validCodes[code] && validCodes[code] === userPhone){
-    // mark unlocked in localStorage so the visitor can reopen test
-    const visitorKey = 'prometric_visitor_unlocked_v1';
-    const s = JSON.parse(localStorage.getItem(visitorKey) || '{}');
-    s[moduleKey] = true;
-    localStorage.setItem(visitorKey, JSON.stringify(s));
-    alert('✅ Code valid — unlocking now. Redirecting to module...');
-    window.location.href = redirectUrl;
-  } else {
-    alert('❌ Invalid code or WhatsApp number. Please contact us to get the correct code.');
-  }
-}
-
-/* ===========================
-   Admin panel logic (local)
-   - admin PIN shows admin body
-   - generate code (stores locally in admin browser store), copy/send via WA
-   - export codes JSON for record
-   NOTE: generated code must also be added to validCodes mapping in this file and pushed to GitHub
-   =========================== */
-
-const ADMIN_PIN = '5821'; // change this to your secret PIN
-
-document.getElementById('admin-toggle').addEventListener('click', ()=> {
-  document.getElementById('admin-modal').style.display = 'block';
-});
-document.getElementById('admin-close').addEventListener('click', ()=> {
-  document.getElementById('admin-modal').style.display = 'none';
-});
-
-document.getElementById('admin-pin').addEventListener('keydown', (e)=>{
-  if(e.key === 'Enter'){ tryPin(); }
-});
-function tryPin(){
-  const v = document.getElementById('admin-pin').value.trim();
-  if(v === ADMIN_PIN){
-    document.getElementById('admin-body').style.display = 'block';
-    document.getElementById('admin-pin').value = '';
-  } else {
-    alert('Incorrect PIN');
-  }
-}
-
-/* local codes store key */
-const CODES_KEY = 'prometric_admin_codes_v1';
-
-function loadAdminCodes(){ try{ return JSON.parse(localStorage.getItem(CODES_KEY) || '[]'); }catch(e){ return []; } }
-function saveAdminCodes(a){ localStorage.setItem(CODES_KEY, JSON.stringify(a)); }
-
-function makeCode(len=8){
-  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
-  let s = '';
-  for(let i=0;i<len;i++) s += chars.charAt(Math.floor(Math.random()*chars.length));
-  return s;
-}
-
-/* generate */
-document.getElementById('generate').addEventListener('click', ()=>{
-  const phone = document.getElementById('admin-phone').value.trim();
-  if(!phone){ alert('Enter buyer WhatsApp (include +)'); return; }
-  const checked = Array.from(document.querySelectorAll('.admin-mod:checked')).map(i=>i.value);
-  if(checked.length === 0){ alert('Select modules'); return; }
-
-  const code = makeCode(8);
-  const rec = { code, phone, modules: checked, createdAt: new Date().toISOString(), used:false, completed:{} };
-  const store = loadAdminCodes();
-  store.push(rec);
-  saveAdminCodes(store);
-  document.getElementById('last-code').textContent = `${rec.code} — ${rec.phone} — ${rec.modules.join(', ')}`;
-  alert('Code generated. Copy or Open WA to send to buyer. IMPORTANT: add this code to validCodes object in index.html and publish the change so the user can use it.');
-});
-
-/* copy */
-document.getElementById('copy').addEventListener('click', ()=>{
-  const store = loadAdminCodes(); if(store.length===0) return alert('No codes yet');
-  const last = store[store.length-1];
-  navigator.clipboard.writeText(last.code).then(()=>alert('Code copied'));
-});
-
-/* open WA to buyer */
-document.getElementById('sendwa').addEventListener('click', ()=>{
-  const store = loadAdminCodes(); if(store.length===0) return alert('No codes yet');
-  const last = store[store.length-1];
-  const p = last.phone.replace(/^\+/, '');
-  const text = encodeURIComponent(`Hello — your unlock code for modules (${last.modules.join(', ')}) is: ${last.code}\nPlease enter this code on the test dashboard to unlock the modules. This code is one-time use and tied to your WhatsApp: ${last.phone}`);
-  window.open(`https://wa.me/${p}?text=${text}`, '_blank');
-});
-
-/* export */
-document.getElementById('export').addEventListener('click', ()=>{
-  const data = loadAdminCodes();
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = `unlock-codes-${new Date().toISOString().slice(0,10)}.json`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-});
-</script>
-
+      // for locked modules
+      if (confirm(`"${module.toUpperCase()}" is locked.\nTo unlock, please contact via WhatsApp.`)) {
+        const msg = encodeURIComponent(
+          `Hello, I want to unlock the "${module}" nursing test module.\n\nIf you agree, please send IDR 200k to OVO 085399652487.\nAfter payment, you will receive an unlock code here.`
+        );
+        window.open(`https://wa.me/6285399652487?text=${msg}`, "_blank");
+      }
+    }
+  </script>
 </body>
 </html>
