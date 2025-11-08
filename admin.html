@@ -1,139 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Unlock Code Dashboard</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f8f9fa;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      color: #333;
-      margin-bottom: 15px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    th, td {
-      padding: 10px 15px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-    th {
-      background: #007bff;
-      color: white;
-    }
-    tr:hover {
-      background: #f1f1f1;
-    }
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      gap: 10px;
-    }
-    button {
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-    .used {
-      color: red;
-      font-weight: bold;
-    }
-    .unused {
-      color: green;
-      font-weight: bold;
-    }
-    .timestamp {
-      color: #666;
-      font-size: 0.9em;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - Unlock Codes</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f9f9f9; margin:0; padding:20px; }
+  h1 { text-align:center; color:#003366; }
+  .container { max-width:480px; margin:auto; padding:20px; background:#fff; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
+  input, button { width:100%; padding:12px; margin-top:10px; font-size:1rem; border-radius:6px; border:1px solid #ccc; }
+  button { background:#003366; color:#fff; border:none; cursor:pointer; }
+  button:hover { background:#0055aa; }
+  .code-list { margin-top:20px; background:#eee; padding:10px; border-radius:6px; max-height:200px; overflow-y:auto; font-family:monospace; }
+</style>
 </head>
 <body>
+<div class="container">
+  <h1>Admin Dashboard</h1>
+  <p>Click the button to generate a new random unlock code:</p>
+  <button onclick="generateCode()">Generate Code</button>
 
-  <h1>🔐 Admin Unlock Code Dashboard</h1>
-  <div class="controls">
-    <button onclick="generateCode()">+ Generate New Code</button>
-    <button onclick="loadCodes()">🔄 Refresh List</button>
-  </div>
+  <p>Existing Codes:</p>
+  <div class="code-list" id="codeList">Loading...</div>
+</div>
 
-  <table id="codesTable">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Code</th>
-        <th>Status</th>
-        <th>Used At</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbw9c1P3M2Mfgeky8Qrjmf80IND5yx5Ur_YLWiT2xhvo0WglKVT5OQbLfn0JuvdNwTSG/exec";
 
-  <script>
-    const REPO_OWNER = "gyoutrain-lab";
-    const REPO_NAME = "prometric-nursing-test-management";
-    const FILE_PATH = "codes.json";
-    const PROXY_URL = "https://script.google.com/macros/s/AKfycbxJ9xxxxxx/exec"; // your real Apps Script web app
+// Fetch existing codes and display
+async function fetchCodes() {
+  try {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+    const codes = data.codes || [];
+    document.getElementById('codeList').textContent = codes.join('\n');
+    return codes;
+  } catch(err) {
+    console.error(err);
+    document.getElementById('codeList').textContent = 'Error fetching codes.';
+    return [];
+  }
+}
 
-    async function loadCodes(){
-      const tbody = document.querySelector("#codesTable tbody");
-      tbody.innerHTML = "<tr><td colspan='4'>Loading...</td></tr>";
+// Generate a random 6-digit alphanumeric code
+function randomCode(length = 6) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let code = '';
+  for(let i=0;i<length;i++) {
+    code += chars.charAt(Math.floor(Math.random()*chars.length));
+  }
+  return code;
+}
 
-      const res = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/${FILE_PATH}`);
-      const codes = await res.json();
+// Generate code and update backend
+async function generateCode() {
+  const existingCodes = await fetchCodes();
+  const newCode = randomCode();
+  existingCodes.push(newCode);
 
-      tbody.innerHTML = "";
-      codes.forEach((c, i)=>{
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${i+1}</td>
-          <td>${c.code}</td>
-          <td class="${c.used ? 'used' : 'unused'}">${c.used ? 'Used' : 'Unused'}</td>
-          <td class="timestamp">${c.usedAt || '-'}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
+  // Update codes.json in GitHub via Apps Script
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ codes: existingCodes })
+    });
+    const result = await response.json();
+    alert(`New code generated: ${newCode}`);
+    await fetchCodes(); // refresh list
+  } catch(err) {
+    console.error(err);
+    alert('Failed to update codes. Check Apps Script deployment.');
+  }
+}
 
-    async function generateCode(){
-      const newCode = "NURSE-" + Math.random().toString(36).substr(2, 5).toUpperCase();
-      const now = new Date().toLocaleString();
-
-      const res = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/${FILE_PATH}`);
-      const codes = await res.json();
-
-      codes.push({ code: newCode, used: false, usedAt: "" });
-
-      // send update to GitHub through proxy
-      await fetch(PROXY_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "updateCodes", data: codes })
-      });
-
-      alert(`✅ New code generated: ${newCode}`);
-      loadCodes();
-    }
-
-    loadCodes();
-  </script>
+// Initial fetch
+fetchCodes();
+</script>
 </body>
 </html>
