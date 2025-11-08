@@ -6,214 +6,136 @@
   <title>Nursing Prometric Test Hub</title>
   <style>
     body {
-      font-family: "Arial", sans-serif;
-      text-align: center;
-      background-color: #f2f2f2;
       margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    header {
-      background-color: #003366;
-      color: white;
-      padding: 15px 0;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    header img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      margin-top: 10px;
-    }
-
-    h1 {
-      font-size: 1.8em;
-      margin: 10px 0 5px;
-    }
-
-    h2 {
-      font-weight: normal;
-      color: #e0f7fa;
-      margin-bottom: 25px;
-    }
-
-    .module-btn {
-      display: block;
-      width: 80%;
-      max-width: 350px;
-      margin: 10px auto;
-      padding: 15px;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.1em;
-      color: white;
-      background-color: #004d99;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .module-btn:hover {
-      transform: scale(1.05);
-    }
-
-    .locked {
-      background-color: #b94a48; /* pale red tone */
-      cursor: not-allowed;
-      opacity: 0.7;
-    }
-
-    footer {
-      margin-top: auto;
-      background: url("assets/water-drop-bg.jpg") no-repeat bottom center;
+      font-family: Arial, sans-serif;
+      background: url('assets/water-drop-bg.jpg') no-repeat center center fixed;
       background-size: cover;
-      padding: 30px 10px;
-      color: white;
-      font-size: 0.9em;
+      text-align: center;
+      color: #001f3f;
     }
-
-    footer a {
-      color: #00e676;
-      text-decoration: none;
-      margin: 0 5px;
-    }
-
-    /* Modal styling same as before */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.75);
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-
-    .modal-content {
-      background: #fff;
-      color: #333;
+    .container {
       padding: 20px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 400px;
-      text-align: left;
     }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      margin: 10px 0;
-    }
-
-    button.modal-btn {
-      background: #004d99;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 8px;
-      cursor: pointer;
+    h1 {
+      font-size: 24px;
+      font-weight: bold;
       margin-top: 10px;
+    }
+    h2 {
+      font-size: 18px;
+      color: #003366;
+      margin-bottom: 20px;
+    }
+    .modules {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      max-width: 350px;
+      margin: 0 auto;
+    }
+    button {
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+      color: white;
+    }
+    .active {
+      background-color: #004aad; /* blue active */
+    }
+    .locked {
+      background-color: #d86b6b; /* pale red for locked */
+      cursor: not-allowed;
+    }
+    .footer {
+      margin-top: 30px;
+      font-size: 14px;
+    }
+    img.icon {
+      margin-top: 15px;
+      width: 120px;
+      border-radius: 50%;
     }
   </style>
 </head>
 <body>
-
-  <header>
-    <img src="assets/icon17 (1).jpg" alt="App Icon">
+  <div class="container">
+    <img src="assets/icon17(1).jpg" alt="Icon" class="icon">
     <h1>🩺 Nursing Prometric Test Hub</h1>
     <h2>Select Your Test Module</h2>
-  </header>
 
-  <button class="module-btn" onclick="startTest('pediatric')">Pediatric Nursing</button>
-  <button class="module-btn locked" onclick="requestUnlock('pharmacology')">Pharmacology</button>
-  <button class="module-btn locked" onclick="requestUnlock('behavioral')">Behavioral / Ethics</button>
-  <button class="module-btn locked" onclick="requestUnlock('criticalcare')">Critical Care</button>
-  <button class="module-btn locked" onclick="requestUnlock('maternity')">Maternity & Obstetric</button>
-  <button class="module-btn locked" onclick="requestUnlock('fundamental')">Fundamental Nursing</button>
-  <button class="module-btn locked" onclick="requestUnlock('medsurg')">Medical-Surgical</button>
-
-  <footer>
-    <p>Nursing Excellence and Career Begin Here</p>
-    <p>Connect with us:
-      <a href="https://wa.me/6285399652487?text=Hello%20I%20want%20to%20unlock%20Nursing%20Prometric%20Test">WhatsApp</a> |
-      <a href="#">Facebook</a>
-    </p>
-    <p>© 2025 GyouTrain Lab</p>
-  </footer>
-
-  <!-- Unlock Modal -->
-  <div class="modal" id="unlockModal">
-    <div class="modal-content">
-      <h3>Unlock Test Module</h3>
-      <p>Enter your WhatsApp number (include +):</p>
-      <input type="text" id="whatsappNumber" placeholder="+628xxxxxxx">
-      <button class="modal-btn" onclick="sendUnlockRequest()">Submit</button>
+    <div class="modules">
+      <button id="pediatricBtn" class="active" onclick="openModule('pediatric.html')">Pediatric Nursing</button>
+      <button id="pharmacologyBtn" class="locked" onclick="tryOpen('Pharmacology')">Pharmacology</button>
+      <button id="behavioralBtn" class="locked" onclick="tryOpen('Behavioral / Ethics')">Behavioral / Ethics</button>
+      <button id="criticalBtn" class="locked" onclick="tryOpen('Critical Care')">Critical Care</button>
+      <button id="maternityBtn" class="locked" onclick="tryOpen('Maternity & Obstetric')">Maternity & Obstetric</button>
+      <button id="fundamentalBtn" class="locked" onclick="tryOpen('Fundamental Nursing')">Fundamental Nursing</button>
+      <button id="medsurgBtn" class="locked" onclick="tryOpen('Medical-Surgical')">Medical-Surgical</button>
     </div>
-  </div>
 
-  <!-- Code Modal -->
-  <div class="modal" id="codeModal">
-    <div class="modal-content">
-      <h3>Enter Unlock Code</h3>
-      <p>After payment via OVO to <b>+6285399652487</b>, you’ll receive a code via WhatsApp.</p>
-      <input type="text" id="unlockCode" placeholder="Enter code here">
-      <button class="modal-btn" onclick="verifyCode()">Unlock Now</button>
+    <div class="footer">
+      <p>Nursing Excellence and Career Begin Here</p>
+      <p>Connect with us: 
+        <a href="https://wa.me/6285399652487" target="_blank">WhatsApp</a> | 
+        <a href="https://facebook.com" target="_blank">Facebook</a>
+      </p>
+      <p>© 2025 GyouTrain Lab</p>
     </div>
   </div>
 
   <script>
-    const unlockModal = document.getElementById("unlockModal");
-    const codeModal = document.getElementById("codeModal");
-    let selectedModule = "";
-
-    function startTest(module) {
-      window.location.href = `${module}.html`;
+    // Check if modules already unlocked
+    if (localStorage.getItem('allUnlocked') === 'true') {
+      unlockAll();
     }
 
-    function requestUnlock(module) {
-      selectedModule = module;
-      unlockModal.style.display = "flex";
+    function openModule(page) {
+      window.location.href = page;
     }
 
-    function sendUnlockRequest() {
-      const number = document.getElementById("whatsappNumber").value.trim();
-      if (!number.startsWith("+")) {
-        alert("Please include country code, e.g., +628...");
-        return;
-      }
-      const message = encodeURIComponent(
-        `You've got one module reserved for ${selectedModule.toUpperCase()}.\nIf you agree, transfer IDR 200k via OVO to +6285399652487.\nAfter payment, you'll get your unlock code via WhatsApp.`
-      );
-      window.open(`https://wa.me/6285399652487?text=${message}`, "_blank");
-      unlockModal.style.display = "none";
-      codeModal.style.display = "flex";
-    }
-
-    function verifyCode() {
-      const code = document.getElementById("unlockCode").value.trim();
-      const validCode = "NURSE2025";
-      if (code === validCode) {
-        localStorage.setItem(`${selectedModule}_unlocked`, "true");
-        alert("✅ Module unlocked! You can now start the test.");
-        codeModal.style.display = "none";
-        document.querySelectorAll(".module-btn").forEach(btn => {
-          if (btn.textContent.toLowerCase().includes(selectedModule)) {
-            btn.classList.remove("locked");
-            btn.style.backgroundColor = "#004d99";
-            btn.onclick = () => startTest(selectedModule);
-          }
-        });
+    function tryOpen(moduleName) {
+      if (localStorage.getItem('allUnlocked') === 'true') {
+        // all unlocked
+        window.location.href = moduleName.toLowerCase().replace(/ & | \/ /g, '-').replace(/ /g, '-') + '.html';
       } else {
-        alert("❌ Invalid unlock code. Please check your WhatsApp message.");
+        const confirmMsg = 
+          `Hello, I want to unlock the "${moduleName}" nursing test module.\n\n` +
+          `If you agree, just send IDR 200k to OVO: +6285399652487.\n` +
+          `After payment, you’ll receive an unlock code via WhatsApp.\n\n` +
+          `Once you have the code, paste it here to unlock all modules.`;
+
+        if (confirm(confirmMsg)) {
+          let code = prompt("Enter the unlock code you received via WhatsApp after payment:");
+          if (code === null || code.trim() === "") {
+            alert("You didn’t enter a code.");
+            return;
+          }
+
+          // 🔑 Define valid codes (you generate these manually)
+          const validCodes = ["GYOU2025", "NURSEPASS", "PROMETRICLAB"];
+
+          if (validCodes.includes(code.trim())) {
+            alert("✅ All test modules are now unlocked!");
+            unlockAll();
+            localStorage.setItem('allUnlocked', 'true');
+          } else {
+            alert("❌ Invalid code. Please check and try again.");
+          }
+        }
       }
+    }
+
+    function unlockAll() {
+      const buttons = document.querySelectorAll("button");
+      buttons.forEach(btn => {
+        btn.classList.remove("locked");
+        btn.classList.add("active");
+        btn.onclick = () => openModule(btn.textContent.toLowerCase().replace(/ & | \/ /g, '-').replace(/ /g, '-') + '.html');
+      });
     }
   </script>
-
 </body>
 </html>
