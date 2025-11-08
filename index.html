@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Prometric Nursing Test Hub">
+<meta property="og:description" content="Access all Nursing Prometric Test Modules on one platform">
+<meta property="og:image" content="https://github.com/gyoutrain-lab/prometric-nursing-test/blob/main/icon17%20(1).jpg?raw=true">
+<meta name="theme-color" content="#b30000">
+<title>Prometric Nursing Test Hub</title>
+<style>
+body {margin:0;font-family:"Poppins",sans-serif;background:#f8f8f8;color:#222;}
+header{background:#b30000;color:white;padding:1rem;text-align:center;font-size:1.4rem;font-weight:600;}
+#splash{position:fixed;top:0;left:0;width:100%;height:100%;background:#b30000 url('https://github.com/gyoutrain-lab/prometric-nursing-test/blob/main/icon17%20(1).jpg?raw=true') center/contain no-repeat;display:flex;justify-content:center;align-items:flex-end;color:gold;font-size:1.6rem;font-weight:bold;text-shadow:2px 2px 4px rgba(0,0,0,0.7);z-index:1000;}
+.container{max-width:800px;margin:20px auto;padding:20px;background:white;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.15);}
+.test-title{text-align:center;font-size:1.3rem;font-weight:600;margin-bottom:1rem;}
+button{background:#b30000;color:white;border:none;padding:12px 20px;border-radius:8px;font-size:1rem;cursor:pointer;transition:.3s;margin-top:10px;width:100%;}
+button:hover{background:#8c0000;}
+.timer{text-align:right;font-size:1rem;color:#b30000;font-weight:bold;margin-bottom:10px;}
+.question{font-weight:600;margin-bottom:8px;}
+.options label{display:block;margin-bottom:8px;}
+.feedback{font-weight:bold;margin-top:5px;}
+.navigation{display:flex;justify-content:space-between;margin-top:20px;}
+footer{text-align:center;margin:25px 0;}
+footer img{width:35px;height:35px;margin:0 10px;}
+.modal{display:none;position:fixed;z-index:2000;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.6);}
+.modal-content{background:#fff;margin:10% auto;padding:20px;border-radius:10px;max-width:400px;position:relative;}
+.modal-content h3{margin-top:0;}
+.close{position:absolute;top:10px;right:15px;font-size:22px;font-weight:bold;cursor:pointer;}
+@media(max-width:768px){header{font-size:1.1rem;padding:.8rem;} .container{width:92%;padding:15px;} button{font-size:.95rem;padding:10px;} .timer{font-size:.9rem;}}
+</style>
+</head>
+<body>
+<header>🩺 Prometric Nursing Test Hub</header>
+
+<div id="splash">Nursing Excellence Begins Here 💧</div>
+
+<div class="container" id="intro">
+<div class="test-title">Select a Test Module</div>
+<button onclick="selectModule('fundamental')">Fundamental Nursing</button>
+<button onclick="selectModule('pediatric')">Pediatric Nursing</button>
+<button onclick="selectModule('pharmacology')">Pharmacology</button>
+<button onclick="selectModule('behavioral')">Behavioral/Ethics</button>
+<button onclick="selectModule('criticalcare')">Critical Care</button>
+<button onclick="selectModule('maternity')">Maternity/Obstetric</button>
+<button onclick="selectModule('medicalsurgical')">Medical-Surgical</button>
+<button onclick="openModal()">Enter Unlock Code</button>
+</div>
+
+<div class="container" id="test-area" style="display:none;">
+<div class="timer" id="timer">Time Left: 15:00</div>
+<div id="question-container"></div>
+<div class="navigation">
+<button id="prevBtn" onclick="prevQuestion()">⟵ Previous</button>
+<button id="nextBtn" onclick="nextQuestion()">Next ⟶</button>
+</div>
+</div>
+
+<div class="container" id="result-area" style="display:none;">
+<h2>Test Completed ✅</h2>
+<p id="score"></p>
+<button onclick="location.reload()">Restart Test</button>
+</div>
+
+<!-- Modal -->
+<div id="unlockModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeModal()">&times;</span>
+<h3>Enter Your Phone Number & Unlock Code</h3>
+<input type="text" id="modalPhone" placeholder="WhatsApp Number (e.g. +6285399652487)" style="width:100%;padding:8px;margin:8px 0;">
+<input type="text" id="modalCode" placeholder="Unlock Code" style="width:100%;padding:8px;margin:8px 0;">
+<button onclick="unlockModulesDynamic()">Unlock Modules</button>
+<p style="font-size:0.85rem;color:#555;margin-top:8px;">Need an unlock code? <a href="https://wa.me/6285399652487?text=Hello,%20I%20would%20like%20to%20continue%20the%20next%20test%20module.%20I%20am%20ready%20to%20transfer%20IDR%20200,000%20via%20OVO.%20Please%20provide%20my%20unique%20unlock%20code." target="_blank">Contact WhatsApp</a></p>
+</div>
+</div>
+
+<footer>
+<div class="social-icons">
+<a href="https://wa.me/6285399652487" target="_blank">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+</a>
+<a href="https://web.facebook.com/gyouskill/?_rdc=1&_rdr#" target="_blank">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook">
+</a>
+</div>
+<p style="font-size:.9rem;color:#555;">© 2025 Prometric Nursing Training Platform</p>
+</footer>
+
+<script>
+// Sample MCQs (10 per module for demo)
+const modules = {
+fundamental: Array.from({length:10},(_,i)=>({q:`Fundamental Q${i+1} sample?`,options:["A","B","C","D"],answer:i%4})),
+pediatric: Array.from({length:10},(_,i)=>({q:`Pediatric Q${i+1} sample?`,options:["A","B","C","D"],answer:i%4})),
+pharmacology: Array.from({length:10},(_,i)=>({q:`Pharmacology Q${i+1}?`,options:["A","B","C","D"],answer:i%4})),
+behavioral: Array.from({length:10},(_,i)=>({q:`Behavioral/Ethics Q${i+1}?`,options:["A","B","C","D"],answer:i%4})),
+criticalcare: Array.from({length:10},(_,i)=>({q:`Critical Care Q${i+1}?`,options:["A","B","C","D"],answer:i%4})),
+maternity: Array.from({length:10},(_,i)=>({q:`Maternity Q${i+1}?`,options:["A","B","C","D"],answer:i%4})),
+medicalsurgical: Array.from({length:10},(_,i)=>({q:`Medical-Surgical Q${i+1}?`,options:["A","B","C","D"],answer:i%4})),
+};
+
+let currentModule=[],currentQuestion=0,score=0,timeLeft=15*60;
+
+// Only pediatric unlocked initially
+let unlockedModules = ['pediatric'];
+
+// Pre-populated bulk unlock codes
+const userUnlockCodes = {
+  "+6285399652487": {code: "ABC123", used: false},
+  "+6281234567890": {code: "XYZ456", used: false},
+  "+6289876543210": {code: "LMN789", used: false}
+  // Add more users here
+};
+
+// Splash hide
+function hideSplash(){document.getElementById('splash').style.display='none';}
+setTimeout(hideSplash,2000);
+
+// Shuffle helper
+function shuffle(a){return a.sort(()=>Math.random()-0.5);}
+
+// Module selection
+function selectModule(mod){
+  if(!unlockedModules.includes(mod)){
+    openModal();
+    return;
+  }
+  startTest(mod);
+}
+
+// Start test
+function startTest(mod){
+  currentModule=shuffle([...modules[mod]]);
+  currentQuestion=0;score=0;
+  document.getElementById('intro').style.display='none';
+  document.getElementById('test-area').style.display='block';
+  showQuestion();
+  startTimer();
+}
+
+// Show question
+function showQuestion(){
+  const q=currentModule[currentQuestion];
+  const container=document.getElementById("question-container");
+  container.innerHTML=`<div class="question">Q${currentQuestion+1}. ${q.q}</div>
+  <div class="options">
+  ${q.options.map((opt,i)=>`<label><input type='radio' name='q${currentQuestion}' value='${i}' onchange="checkAnswer(${i})"> ${opt}</label>`).join('')}
+  </div>
+  <div class="feedback" id="feedback"></div>`;
+}
+
+// Check answer
+function checkAnswer(selected){
+  const q=currentModule[currentQuestion];
+  const feedback=document.getElementById("feedback");
+  if(selected===q.answer){
+    feedback.textContent="✅ Correct!";
+    feedback.style.color="green";
+    score++;
+  }else{
+    feedback.textContent="❌ Incorrect!";
+    feedback.style.color="red";
+  }
+}
+
+// Navigation
+function nextQuestion(){if(currentQuestion<currentModule.length-1){currentQuestion++;showQuestion();}else finishTest();}
+function prevQuestion(){if(currentQuestion>0){currentQuestion--;showQuestion();}}
+
+// Timer
+function startTimer(){
+  const timerElement=document.getElementById("timer");
+  const timer=setInterval(()=>{
+    let min=Math.floor(timeLeft/60);let sec=timeLeft%60;
+    timerElement.textContent=`Time Left: ${min}:${sec<10?'0'+sec:sec}`;
+    timeLeft--;
+    if(timeLeft<0){clearInterval(timer);finishTest();}
+  },1000);
+}
+
+// Finish test
+function finishTest(){
+  document.getElementById('test-area').style.display='none';
+  document.getElementById('result-area').style.display='block';
+  document.getElementById('score').textContent=`You scored ${score} out of ${currentModule.length}`;
+}
+
+// Modal
+function openModal(){document.getElementById('unlockModal').style.display='block';}
+function closeModal(){document.getElementById('unlockModal').style.display='none';}
+
+// Unlock modules securely (user)
+function unlockModulesDynamic(){
+  const phone=document.getElementById('modalPhone').value.trim();
+  const code=document.getElementById('modalCode').value.trim();
+  
+  if(userUnlockCodes[phone]){
+    if(userUnlockCodes[phone].used){
+      alert("❌ This unlock code has already been used.");
+      return;
+    }
+    if(userUnlockCodes[phone].code === code){
+      unlockedModules=['fundamental','pediatric','pharmacology','behavioral','criticalcare','maternity','medicalsurgical'];
+      userUnlockCodes[phone].used = true; // mark as used
+      alert("✅ All test modules are now unlocked! You can continue!");
+      closeModal();
+      return;
+    }
+  }
+  alert("❌ Invalid phone number or unlock code. Please contact WhatsApp for support.");
+}
+</script>
+
+<script>
+// Disable right-click and Ctrl+S (light anti-download)
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {if(e.ctrlKey && e.key==='s'){e.preventDefault();alert("Saving is disabled.");}});
+</script>
+</body>
+</html>
