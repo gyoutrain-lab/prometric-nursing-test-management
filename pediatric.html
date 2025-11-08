@@ -1,42 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pediatric Nursing Simulation Test</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f8fb;
-      text-align: center;
-      padding: 40px;
-    }
-    h1 {
-      color: #004080;
-      margin-bottom: 20px;
-    }
-    p {
-      font-size: 18px;
-      color: #333;
-    }
-    button {
-      background-color: #004080;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      margin-top: 30px;
-    }
-    button:hover {
-      background-color: #002a57;
-    }
-  </style>
-</head>
-<body>
-  <h1>🩺 Pediatric Nursing Simulation Test</h1>
-  <p>Welcome to your unlocked Pediatric Nursing module.</p>
-  <p>This page can later include the real test questions.</p>
-  <button onclick="window.location.href='index.html'">← Back to Dashboard</button>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pediatric Nursing Simulation Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+      }
+
+      .header {
+        background-color: #2e7d32;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .timer {
+        text-align: right;
+        padding: 10px 15px;
+        font-size: 18px;
+        background-color: #e8f5e9;
+        color: #1b5e20;
+      }
+
+      .container {
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .question {
+        font-size: 18px;
+        margin-bottom: 15px;
+      }
+
+      .options label {
+        display: block;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        cursor: pointer;
+      }
+
+      .options input {
+        margin-right: 10px;
+      }
+
+      .navigation {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      #prevBtn {
+        background-color: #9e9e9e;
+        color: white;
+      }
+
+      #nextBtn {
+        background-color: #2e7d32;
+        color: white;
+      }
+
+      #finishBtn {
+        background-color: #c62828;
+        color: white;
+        display: none;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 14px;
+        color: gray;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">🩺 Pediatric Nursing Simulation Test</div>
+    <div class="timer">⏱ Time Left: <span id="timer">60:00</span></div>
+
+    <div class="container">
+      <div id="question-container">
+        <div class="question" id="question"></div>
+        <div class="options" id="options"></div>
+      </div>
+
+      <div class="navigation">
+        <button id="prevBtn">⟵ Previous</button>
+        <button id="nextBtn">Next ⟶</button>
+        <button id="finishBtn">Finish Test</button>
+      </div>
+
+      <div class="footer">
+        Candidate: <b>Giyono</b><br /><br />
+        <a href="index.html">← Back to Dashboard</a>
+      </div>
+    </div>
+
+    <script>
+      const questions = [
+        {
+          q: "When caring for a child with dehydration, the nurse should monitor for which primary indicator?",
+          a: [
+            "A. Increased urine output",
+            "B. Sunken fontanel",
+            "C. Elevated blood pressure",
+            "D. Moist mucous membranes",
+          ],
+          correct: 1,
+        },
+        {
+          q: "Which vaccine is contraindicated for a child with severe egg allergy?",
+          a: [
+            "A. MMR",
+            "B. Varicella",
+            "C. Influenza (live attenuated)",
+            "D. Polio (inactivated)",
+          ],
+          correct: 2,
+        },
+        {
+          q: "A nurse observes Koplik spots in a child. This finding is associated with which disease?",
+          a: ["A. Rubella", "B. Measles", "C. Mumps", "D. Scarlet fever"],
+          correct: 1,
+        },
+      ];
+
+      let currentQuestion = 0;
+      let score = 0;
+      const questionEl = document.getElementById("question");
+      const optionsEl = document.getElementById("options");
+      const nextBtn = document.getElementById("nextBtn");
+      const prevBtn = document.getElementById("prevBtn");
+      const finishBtn = document.getElementById("finishBtn");
+
+      function showQuestion() {
+        const q = questions[currentQuestion];
+        questionEl.textContent = q.q;
+        optionsEl.innerHTML = "";
+        q.a.forEach((option, index) => {
+          const label = document.createElement("label");
+          label.innerHTML = `<input type="radio" name="answer" value="${index}"> ${option}`;
+          optionsEl.appendChild(label);
+        });
+        prevBtn.style.display = currentQuestion === 0 ? "none" : "inline-block";
+        nextBtn.style.display =
+          currentQuestion === questions.length - 1
+            ? "none"
+            : "inline-block";
+        finishBtn.style.display =
+          currentQuestion === questions.length - 1
+            ? "inline-block"
+            : "none";
+      }
+
+      nextBtn.addEventListener("click", () => {
+        const selected = document.querySelector(
+          'input[name="answer"]:checked'
+        );
+        if (selected && parseInt(selected.value) === questions[currentQuestion].correct) {
+          score++;
+        }
+        currentQuestion++;
+        showQuestion();
+      });
+
+      prevBtn.addEventListener("click", () => {
+        currentQuestion--;
+        showQuestion();
+      });
+
+      finishBtn.addEventListener("click", () => {
+        alert(`Test completed! Your score: ${score}/${questions.length}`);
+        window.location.href = "index.html";
+      });
+
+      showQuestion();
+
+      // Timer
+      let timeLeft = 60 * 60; // 60 minutes
+      const timerDisplay = document.getElementById("timer");
+
+      setInterval(() => {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerDisplay.textContent = `${minutes}:${seconds
+          .toString()
+          .padStart(2, "0")}`;
+        if (timeLeft > 0) timeLeft--;
+      }, 1000);
+    </script>
+  </body>
 </html>
