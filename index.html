@@ -34,15 +34,8 @@
       z-index: 1;
     }
 
-    header h1 {
-      font-size:2.2rem;
-      margin-bottom:0.5rem;
-    }
-
-    header h2 {
-      font-size:1.3rem;
-      font-weight:normal;
-    }
+    header h1 { font-size:2.2rem; margin-bottom:0.5rem; }
+    header h2 { font-size:1.3rem; font-weight:normal; }
 
     .dashboard {
       width:90%;
@@ -79,12 +72,7 @@
       margin:0 5px;
     }
 
-    footer {
-      padding:1rem;
-      font-size:0.9rem;
-      color:#777;
-      text-align:center;
-    }
+    footer { padding:1rem; font-size:0.9rem; color:#777; text-align:center; }
 
     @media (max-width:480px) {
       header h1 { font-size:1.8rem; }
@@ -104,13 +92,13 @@
     <!-- Only Pediatric Nursing accessible -->
     <button onclick="window.location.href='https://gyoutrain-lab.github.io/nursing-prometric-test-pediatric/'">Pediatric Nursing</button>
 
-    <!-- All other modules locked -->
-    <button onclick="unlockModule('pharmacology')">Pharmacology</button>
-    <button onclick="unlockModule('fundamental')">Fundamental Nursing</button>
-    <button onclick="unlockModule('behavioral')">Behavioral / Ethics</button>
-    <button onclick="unlockModule('criticalcare')">Critical Care</button>
-    <button onclick="unlockModule('maternity')">Maternity & Obstetric</button>
-    <button onclick="unlockModule('medicalsurgical')">Medical-Surgical</button>
+    <!-- Other modules require unlock -->
+    <button onclick="lockModule('Pharmacology', 'https://gyoutrain-lab.github.io/nursing-prometric-test-pharmacology/')">Pharmacology</button>
+    <button onclick="lockModule('Fundamental Nursing', 'https://gyoutrain-lab.github.io/nursing-prometric-test/')">Fundamental Nursing</button>
+    <button onclick="lockModule('Behavioral / Ethics', 'https://gyoutrain-lab.github.io/nursing-prometric-test-eticabehabior/')">Behavioral / Ethics</button>
+    <button onclick="lockModule('Critical Care', 'https://gyoutrain-lab.github.io/nursing-prometric-test-criticalcare2/')">Critical Care</button>
+    <button onclick="lockModule('Maternity & Obstetric', 'https://gyoutrain-lab.github.io/nursing-prometric-test-maternityobstetric/')">Maternity & Obstetric</button>
+    <button onclick="lockModule('Medical-Surgical', 'https://gyoutrain-lab.github.io/nursing-prometric-test-medical-surgical/')">Medical-Surgical</button>
   </div>
 
   <div class="footer-section">
@@ -128,50 +116,24 @@
   <script>
     const businessWA = "+6285399652487";
 
-    // Predefined unique codes mapped to WhatsApp numbers
-    const validCodes = {
-      "CODE123": "+628111111111",
-      "CODE456": "+628222222222",
-      "CODE789": "+628333333333"
-    };
+    function lockModule(moduleName, url) {
+      alert(`The "${moduleName}" module is locked.\n\nTo unlock, please contact us via WhatsApp.`);
 
-    let unlockedModules = JSON.parse(localStorage.getItem('unlockedModules') || "{}");
-
-    function unlockModule(moduleName) {
-      if (unlockedModules[moduleName]) { redirectToModule(moduleName); return; }
-
-      const confirmUnlock = confirm(`To access the "${moduleName}" module, please contact WhatsApp to unlock. Click OK to open WhatsApp message.`);
-      if (!confirmUnlock) return;
-
-      const waMessage = encodeURIComponent(`Hello, I want to unlock the "${moduleName}" nursing test.`);
+      const waMessage = encodeURIComponent(`Hello, I want to unlock the "${moduleName}" nursing test module.`);
       window.open(`https://wa.me/${businessWA}?text=${waMessage}`, "_blank");
 
-      const userWA = prompt("Enter your WhatsApp number used to contact us (include country code, e.g., +628123456789):");
-      if (!userWA) return alert("No WhatsApp number entered. Module remains locked.");
-
-      const code = prompt("Enter the unlock code you received:");
-      if (!code) return alert("No code entered. Module remains locked.");
-
-      if (validCodes[code] === userWA) {
-        unlockedModules[moduleName] = true;
-        localStorage.setItem('unlockedModules', JSON.stringify(unlockedModules));
-        alert("✅ Module unlocked! You can now access it.");
-        redirectToModule(moduleName);
-        delete validCodes[code]; // prevent reuse
-      } else {
-        alert("❌ Invalid code or WhatsApp number. Please contact us to get a valid unlock code.");
+      const code = prompt("Enter the unlock code you received via WhatsApp:");
+      if(!code) {
+        alert("No code entered. Module remains locked.");
+        return;
       }
-    }
 
-    function redirectToModule(moduleName) {
-      switch(moduleName) {
-        case 'pharmacology': window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test-pharmacology/'; break;
-        case 'fundamental': window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test/'; break;
-        case 'behavioral': window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test-eticabehabior/'; break;
-        case 'criticalcare': window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test-criticalcare2/'; break;
-        case 'maternity': window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test-maternityobstetric/'; break;
-        case 'medicalsurgical': window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test-medical-surgical/'; break;
-        default: alert("Module not found.");
+      // Example: only accept code 'UNLOCK123' for demonstration
+      if(code === "UNLOCK123") {
+        alert(`✅ "${moduleName}" unlocked! Redirecting now...`);
+        window.location.href = url;
+      } else {
+        alert("❌ Invalid code. Please contact us to get a valid unlock code.");
       }
     }
   </script>
