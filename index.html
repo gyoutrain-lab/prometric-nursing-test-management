@@ -1,191 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🩺 Nursing Prometric Test Hub</title>
-  <link rel="icon" type="image/jpg" href="assets/icon17.jpg" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #ffffff, #ffe6e6);
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      padding: 20px;
-    }
-    img.icon {
-      width: 100px;
-      border-radius: 50%;
-      margin-top: 20px;
-    }
-    h1 {
-      color: #004080;
-      margin-top: 10px;
-    }
-    h2 {
-      color: #0066cc;
-      font-weight: normal;
-      margin-bottom: 25px;
-    }
-    .btn {
-      display: block;
-      width: 90%;
-      margin: 10px auto;
-      padding: 15px;
-      border: none;
-      border-radius: 12px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .btn.active {
-      background-color: #004080;
-      color: white;
-    }
-    .btn.locked {
-      background-color: #ffb3b3;
-      color: #800000;
-      cursor: not-allowed;
-    }
-    .btn.active:hover {
-      background-color: #003366;
-    }
-    .unlock-box {
-      margin-top: 25px;
-      background: #fff0f0;
-      border: 1px solid #ffcccc;
-      border-radius: 10px;
-      padding: 15px;
-    }
-    .unlock-input {
-      width: 70%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 15px;
-    }
-    .unlock-btn {
-      padding: 10px 15px;
-      border-radius: 8px;
-      background-color: #004080;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    .image-section {
-      background: url("assets/water-drop-bg.jpg") no-repeat center bottom/cover;
-      height: 180px;
-      display: flex;
-      justify-content: left;
-      align-items: flex-end;
-      padding: 20px;
-      color: gold;
-      font-size: 20px;
-      font-weight: bold;
-    }
-    .footer {
-      margin-top: 40px;
-      font-size: 14px;
-      color: #555;
-    }
-    @media (max-width: 600px) {
-      .btn {
-        font-size: 15px;
-        padding: 12px;
-      }
-      img.icon {
-        width: 80px;
-      }
-      .image-section {
-        height: 150px;
-        font-size: 16px;
-      }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nursing Prometric Test Hub</title>
+<link rel="icon" href="assets/icon17 (1).jpg" />
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #ffffff, #e8f0f7);
+    text-align: center;
+    padding: 10px;
+  }
+  h1 {
+    font-size: 1.5em;
+    color: #004080;
+    margin-top: 20px;
+  }
+  h2 {
+    color: #004080;
+    margin-bottom: 20px;
+  }
+  .button {
+    display: block;
+    width: 90%;
+    max-width: 300px;
+    margin: 10px auto;
+    padding: 15px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .active {
+    background-color: #004080;
+  }
+  .locked {
+    background-color: #e68a8a; /* pale red */
+    cursor: not-allowed;
+  }
+  .footer {
+    margin-top: 30px;
+    font-size: 0.9em;
+    color: #333;
+  }
+  .image-section {
+    margin-top: 20px;
+    background: url('assets/icon17 (1).jpg') center/contain no-repeat;
+    height: 200px;
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <img src="assets/icon17.jpg" alt="Icon" class="icon" />
-    <h1>🩺 Nursing Prometric Test Hub</h1>
-    <h2>Select Your Test Module</h2>
 
-    <!-- Always Active -->
-    <button class="btn active" onclick="window.location.href='pediatric.html'">Pediatric Nursing</button>
+<h1>🩺 Nursing Prometric Test Hub</h1>
+<h2>Select Your Test Module</h2>
 
-    <!-- Modules (locked or active based on unlock) -->
-    <button id="btnPharma" class="btn locked" onclick="tryOpen('pharmacology.html')">Pharmacology</button>
-    <button id="btnBehavioral" class="btn locked" onclick="tryOpen('behavioral.html')">Behavioral / Ethics</button>
-    <button id="btnCritical" class="btn locked" onclick="tryOpen('critical.html')">Critical Care</button>
-    <button id="btnMaternity" class="btn locked" onclick="tryOpen('maternity.html')">Maternity & Obstetric</button>
-    <button id="btnFundamental" class="btn locked" onclick="tryOpen('fundamental.html')">Fundamental Nursing</button>
-    <button id="btnMedical" class="btn locked" onclick="tryOpen('medical.html')">Medical-Surgical</button>
+<!-- Test buttons -->
+<button class="button active" onclick="location.href='pediatric.html'">Pediatric Nursing</button>
+<button class="button locked" onclick="lockedMsg('Pharmacology')">Pharmacology</button>
+<button class="button locked" onclick="lockedMsg('Behavioral / Ethics')">Behavioral / Ethics</button>
+<button class="button locked" onclick="lockedMsg('Critical Care')">Critical Care</button>
+<button class="button locked" onclick="lockedMsg('Maternity & Obstetric')">Maternity & Obstetric</button>
+<button class="button locked" onclick="lockedMsg('Fundamental Nursing')">Fundamental Nursing</button>
+<button class="button locked" onclick="lockedMsg('Medical-Surgical')">Medical-Surgical</button>
 
-    <div class="unlock-box">
-      <p><strong>🔓 Unlock All Modules</strong></p>
-      <input id="unlockCode" class="unlock-input" placeholder="Enter unlock code here..." />
-      <button class="unlock-btn" onclick="checkCode()">Unlock</button>
-    </div>
+<div class="image-section"></div>
 
-    <div class="image-section">
-      Nursing Excellence Begins Here 💧
-    </div>
+<p>Nursing Excellence and Career Begin Here</p>
+<p>Connect with us:
+  <a href="https://wa.me/6285399652487?text=Hello%20I%20want%20to%20unlock%20the%20next%20Nursing%20Prometric%20Test%20Module" target="_blank">WhatsApp</a> |
+  <a href="https://web.facebook.com/gyouskill/?_rdc=1&_rdr#" target="_blank">Facebook</a>
+</p>
 
-    <div class="footer">
-      Connect with us: 
-      <a href="https://wa.me/6285399652487" target="_blank">WhatsApp</a> | 
-      <a href="https://web.facebook.com/gyouskill/?_rdc=1&_rdr#" target="_blank">Facebook</a>
-      <br /><br />
-      © 2025 GyouTrain Lab
-    </div>
-  </div>
+<p class="footer">© 2025 GyouTrain Lab</p>
 
-  <script>
-    const validCode = "GYOU2025"; // 🔑 your unlock code (you can change this)
-    const isUnlocked = localStorage.getItem("unlockedModules") === "true";
+<script>
+function lockedMsg(moduleName) {
+  alert("🔒 " + moduleName + " module is locked.\n\nTo unlock all modules:\n1️⃣ Contact WhatsApp +6285399652487\n2️⃣ Transfer IDR 200k via OVO.\n3️⃣ You'll receive your unlock code after confirmation.");
+}
+</script>
 
-    function tryOpen(link) {
-      if (isUnlocked) {
-        window.location.href = link;
-      } else {
-        alert("🔒 This module is locked.\nContact admin via WhatsApp to unlock.");
-        requestUnlock();
-      }
-    }
-
-    function requestUnlock() {
-      const phoneNumber = "6285399652487";
-      const message = `Hello, I want to unlock all Nursing Test modules.\n\nPlease send the unlock code after payment confirmation.`;
-      const waLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-      window.open(waLink, "_blank");
-    }
-
-    function checkCode() {
-      const code = document.getElementById("unlockCode").value.trim();
-      if (code === validCode) {
-        localStorage.setItem("unlockedModules", "true");
-        alert("✅ Unlock successful! All modules are now available.");
-        unlockAll();
-      } else {
-        alert("❌ Incorrect code. Please try again or contact admin.");
-      }
-    }
-
-    function unlockAll() {
-      document.querySelectorAll(".btn.locked").forEach(btn => {
-        btn.classList.remove("locked");
-        btn.classList.add("active");
-        btn.style.cursor = "pointer";
-      });
-    }
-
-    if (isUnlocked) {
-      unlockAll();
-    }
-  </script>
 </body>
 </html>
