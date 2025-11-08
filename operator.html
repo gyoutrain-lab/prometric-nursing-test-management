@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operator Dashboard | Unlock Code Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f6fa;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #003366;
+    }
+
+    .panel {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 500px;
+      margin: 20px auto;
+    }
+
+    input, select {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    button {
+      padding: 10px 18px;
+      background-color: #003366;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    button:hover {
+      background-color: #001f4d;
+    }
+
+    .code-box {
+      background-color: #f0f0f0;
+      font-weight: bold;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 10px;
+      word-break: break-all;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #003366;
+      color: white;
+    }
+
+    td.used {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔐 Operator Dashboard</h1>
+  <p>Generate, track, and manage unlock codes for the Nursing Prometric Test Hub.</p>
+
+  <div class="panel">
+    <select id="module">
+      <option value="Pharmacology">Pharmacology</option>
+      <option value="Behavioral / Ethics">Behavioral / Ethics</option>
+      <option value="Critical Care">Critical Care</option>
+      <option value="Maternity & Obstetric">Maternity & Obstetric</option>
+      <option value="Fundamental Nursing">Fundamental Nursing</option>
+      <option value="Medical-Surgical">Medical-Surgical</option>
+    </select>
+
+    <input type="text" id="userName" placeholder="User name (e.g. Giyono)" />
+    <input type="text" id="waNumber" placeholder="User WhatsApp (e.g. +62853...)" />
+
+    <button onclick="generateCode()">Generate Unlock Code</button>
+
+    <div id="codeResult" class="code-box" style="display:none;"></div>
+  </div>
+
+  <table id="logTable">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>WhatsApp</th>
+        <th>Module</th>
+        <th>Code</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const usedCodes = [];
+
+    function generateCode() {
+      const user = document.getElementById("userName").value.trim();
+      const wa = document.getElementById("waNumber").value.trim();
+      const module = document.getElementById("module").value;
+
+      if (!user || !wa) {
+        alert("Please fill in both user name and WhatsApp number.");
+        return;
+      }
+
+      const uniqueCode = "GYOU-" + Math.random().toString(36).substring(2, 10).toUpperCase();
+
+      // Display code
+      const codeBox = document.getElementById("codeResult");
+      codeBox.innerHTML = `Generated Code: <br><strong>${uniqueCode}</strong><br><br>
+        <button onclick="copyToClipboard('${uniqueCode}')">📋 Copy Code</button>`;
+      codeBox.style.display = "block";
+
+      // Save record
+      const table = document.querySelector("#logTable tbody");
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${user}</td>
+        <td>${wa}</td>
+        <td>${module}</td>
+        <td>${uniqueCode}</td>
+        <td id="status-${uniqueCode}">Active</td>
+      `;
+      table.appendChild(row);
+
+      // Store locally
+      usedCodes.push({ user, wa, module, code: uniqueCode, used: false });
+      saveToLocal();
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text);
+      alert("Code copied! You can now paste it to WhatsApp.");
+    }
+
+    function saveToLocal() {
+      localStorage.setItem("unlockCodes", JSON.stringify(usedCodes));
+    }
+
+    function loadFromLocal() {
+      const saved = JSON.parse(localStorage.getItem("unlockCodes") || "[]");
+      const table = document.querySelector("#logTable tbody");
+      table.innerHTML = "";
+      saved.forEach(rec => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${rec.user}</td>
+          <td>${rec.wa}</td>
+          <td>${rec.module}</td>
+          <td>${rec.code}</td>
+          <td class="${rec.used ? 'used' : ''}">${rec.used ? 'Used' : 'Active'}</td>
+        `;
+        table.appendChild(row);
+        usedCodes.push(rec);
+      });
+    }
+
+    window.onload = loadFromLocal;
+  </script>
+</body>
+</html>
