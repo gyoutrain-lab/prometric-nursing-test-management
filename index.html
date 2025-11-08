@@ -8,21 +8,39 @@
     body {
       font-family: "Arial", sans-serif;
       text-align: center;
-      background: url("water-drop-bg.jpg") no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
+      background-color: #f2f2f2;
       margin: 0;
       padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
+
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 15px 0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    header img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-top: 10px;
+    }
+
     h1 {
       font-size: 1.8em;
-      margin-top: 40px;
+      margin: 10px 0 5px;
     }
+
     h2 {
       font-weight: normal;
-      margin-bottom: 25px;
       color: #e0f7fa;
+      margin-bottom: 25px;
     }
+
     .module-btn {
       display: block;
       width: 80%;
@@ -33,27 +51,37 @@
       border-radius: 12px;
       font-size: 1.1em;
       color: white;
-      background-color: #004d99; /* active blue */
+      background-color: #004d99;
       cursor: pointer;
       transition: all 0.3s ease;
     }
+
     .module-btn:hover {
       transform: scale(1.05);
     }
+
     .locked {
-      background-color: #b33a3a; /* pale red */
+      background-color: #b94a48; /* pale red tone */
       cursor: not-allowed;
       opacity: 0.7;
     }
-    .footer {
-      margin-top: 30px;
+
+    footer {
+      margin-top: auto;
+      background: url("assets/water-drop-bg.jpg") no-repeat bottom center;
+      background-size: cover;
+      padding: 30px 10px;
+      color: white;
       font-size: 0.9em;
     }
-    .footer a {
+
+    footer a {
       color: #00e676;
       text-decoration: none;
       margin: 0 5px;
     }
+
+    /* Modal styling same as before */
     .modal {
       display: none;
       position: fixed;
@@ -64,6 +92,7 @@
       align-items: center;
       z-index: 999;
     }
+
     .modal-content {
       background: #fff;
       color: #333;
@@ -73,6 +102,7 @@
       max-width: 400px;
       text-align: left;
     }
+
     input[type="text"] {
       width: 100%;
       padding: 10px;
@@ -80,6 +110,7 @@
       border: 1px solid #ccc;
       margin: 10px 0;
     }
+
     button.modal-btn {
       background: #004d99;
       color: white;
@@ -93,8 +124,11 @@
 </head>
 <body>
 
-  <h1>🩺 Nursing Prometric Test Hub</h1>
-  <h2>Select Your Test Module</h2>
+  <header>
+    <img src="assets/icon17 (1).jpg" alt="App Icon">
+    <h1>🩺 Nursing Prometric Test Hub</h1>
+    <h2>Select Your Test Module</h2>
+  </header>
 
   <button class="module-btn" onclick="startTest('pediatric')">Pediatric Nursing</button>
   <button class="module-btn locked" onclick="requestUnlock('pharmacology')">Pharmacology</button>
@@ -104,28 +138,30 @@
   <button class="module-btn locked" onclick="requestUnlock('fundamental')">Fundamental Nursing</button>
   <button class="module-btn locked" onclick="requestUnlock('medsurg')">Medical-Surgical</button>
 
-  <div class="footer">
+  <footer>
     <p>Nursing Excellence and Career Begin Here</p>
     <p>Connect with us:
       <a href="https://wa.me/6285399652487?text=Hello%20I%20want%20to%20unlock%20Nursing%20Prometric%20Test">WhatsApp</a> |
       <a href="#">Facebook</a>
     </p>
     <p>© 2025 GyouTrain Lab</p>
-  </div>
+  </footer>
 
+  <!-- Unlock Modal -->
   <div class="modal" id="unlockModal">
     <div class="modal-content">
       <h3>Unlock Test Module</h3>
-      <p>Enter your WhatsApp number used to contact us (include +):</p>
+      <p>Enter your WhatsApp number (include +):</p>
       <input type="text" id="whatsappNumber" placeholder="+628xxxxxxx">
       <button class="modal-btn" onclick="sendUnlockRequest()">Submit</button>
     </div>
   </div>
 
+  <!-- Code Modal -->
   <div class="modal" id="codeModal">
     <div class="modal-content">
       <h3>Enter Unlock Code</h3>
-      <p>After payment via OVO to <b>+6285399652487</b>, you'll receive a code on WhatsApp.</p>
+      <p>After payment via OVO to <b>+6285399652487</b>, you’ll receive a code via WhatsApp.</p>
       <input type="text" id="unlockCode" placeholder="Enter code here">
       <button class="modal-btn" onclick="verifyCode()">Unlock Now</button>
     </div>
@@ -152,7 +188,7 @@
         return;
       }
       const message = encodeURIComponent(
-        `You've got one module reserved for ${selectedModule.toUpperCase()}.\nIf you agree, transfer IDR 200k via OVO to +6285399652487.\nAfter payment, you'll get your unlock code via WhatsApp.\nSend your OVO confirmation message here when ready.`
+        `You've got one module reserved for ${selectedModule.toUpperCase()}.\nIf you agree, transfer IDR 200k via OVO to +6285399652487.\nAfter payment, you'll get your unlock code via WhatsApp.`
       );
       window.open(`https://wa.me/6285399652487?text=${message}`, "_blank");
       unlockModal.style.display = "none";
@@ -161,7 +197,7 @@
 
     function verifyCode() {
       const code = document.getElementById("unlockCode").value.trim();
-      const validCode = "NURSE2025"; // temporary static code
+      const validCode = "NURSE2025";
       if (code === validCode) {
         localStorage.setItem(`${selectedModule}_unlocked`, "true");
         alert("✅ Module unlocked! You can now start the test.");
@@ -176,15 +212,6 @@
       } else {
         alert("❌ Invalid unlock code. Please check your WhatsApp message.");
       }
-    }
-
-    // Relock after all modules used
-    const allModules = ["pediatric", "pharmacology", "behavioral", "criticalcare", "maternity", "fundamental", "medsurg"];
-    if (allModules.every(m => localStorage.getItem(`${m}_unlocked`) === "true")) {
-      allModules.forEach(m => {
-        localStorage.removeItem(`${m}_unlocked`);
-        location.reload();
-      });
     }
   </script>
 
