@@ -3,154 +3,175 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nursing Test Dashboard</title>
+  <title>Nursing Prometric Test Hub</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f3f4;
-      color: #333;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: Arial, sans-serif; background-color:#f2f3f4; color:#333; display:flex; flex-direction:column; align-items:center; min-height:100vh; }
 
     header {
-      width: 100%;
-      background-color: #4a90e2;
-      color: white;
-      text-align: center;
-      padding: 1rem 0;
+      width:100%;
+      height:50vh;
+      background: url('assets/water-drop-bg.jpg') no-repeat center center;
+      background-size: cover;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      color:white;
     }
 
-    header img {
-      width: 80px;
-      height: auto;
-      margin-bottom: 0.5rem;
+    header::after {
+      content:"";
+      position:absolute;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.35);
     }
 
-    h1 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+    header h1, header h2 {
+      position: relative;
+      z-index: 1;
+    }
+
+    header h1 {
+      font-size:2.2rem;
+      margin-bottom:0.5rem;
+    }
+
+    header h2 {
+      font-size:1.3rem;
+      font-weight:normal;
     }
 
     .dashboard {
-      width: 90%;
-      max-width: 500px;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-top: 2rem;
+      width:90%;
+      max-width:500px;
+      display:flex;
+      flex-direction:column;
+      gap:1rem;
+      margin:2rem 0;
     }
 
     .dashboard button {
-      padding: 1rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      background-color: #4a90e2;
-      color: white;
+      padding:1rem;
+      font-size:1rem;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      background-color:#4a90e2;
+      color:white;
       transition: background 0.3s;
     }
 
-    .dashboard button:hover {
-      background-color: #357ABD;
+    .dashboard button:hover { background-color:#357ABD; }
+
+    .footer-section {
+      text-align:center;
+      margin-bottom:2rem;
+    }
+
+    .footer-section p { margin:0.5rem 0; }
+
+    .footer-section a {
+      color:#4a90e2;
+      text-decoration:none;
+      margin:0 5px;
     }
 
     footer {
-      margin-top: auto;
-      padding: 1rem;
-      font-size: 0.9rem;
-      color: #777;
-      text-align: center;
+      padding:1rem;
+      font-size:0.9rem;
+      color:#777;
+      text-align:center;
     }
 
-    @media (max-width: 480px) {
-      h1 { font-size: 1.2rem; }
-      .dashboard button { font-size: 0.9rem; padding: 0.8rem; }
-      header img { width: 60px; }
+    @media (max-width:480px) {
+      header h1 { font-size:1.8rem; }
+      header h2 { font-size:1rem; }
+      .dashboard button { font-size:0.9rem; padding:0.8rem; }
     }
   </style>
 </head>
 <body>
 
   <header>
-    <img src="assets/icon17 (1).jpg" alt="Icon">
-    <h1>Nursing Test Dashboard</h1>
+    <h1>🩺 Nursing Prometric Test Hub</h1>
+    <h2>Select Your Test Module</h2>
   </header>
 
   <div class="dashboard">
-    <!-- Always accessible modules -->
-    <button onclick="window.location.href='https://gyoutrain-lab.github.io/nursing-prometric-test-pediatric/'">Pediatric</button>
-    <button onclick="window.location.href='https://gyoutrain-lab.github.io/nursing-prometric-test-pharmacology/'">Pharmacology</button>
-    <button onclick="window.location.href='https://gyoutrain-lab.github.io/nursing-prometric-test/'">Fundamental</button>
+    <!-- Only Pediatric Nursing accessible -->
+    <button onclick="window.location.href='https://gyoutrain-lab.github.io/nursing-prometric-test-pediatric/'">Pediatric Nursing</button>
 
-    <!-- Locked modules -->
-    <button onclick="unlockModule('behavioral')">Behavioral</button>
+    <!-- All other modules locked -->
+    <button onclick="unlockModule('pharmacology')">Pharmacology</button>
+    <button onclick="unlockModule('fundamental')">Fundamental Nursing</button>
+    <button onclick="unlockModule('behavioral')">Behavioral / Ethics</button>
     <button onclick="unlockModule('criticalcare')">Critical Care</button>
-    <button onclick="unlockModule('maternity')">Maternity</button>
-    <button onclick="unlockModule('medicalsurgical')">Medical Surgical</button>
+    <button onclick="unlockModule('maternity')">Maternity & Obstetric</button>
+    <button onclick="unlockModule('medicalsurgical')">Medical-Surgical</button>
+  </div>
+
+  <div class="footer-section">
+    <p><strong>Nursing Excellence and Career Begin Here</strong></p>
+    <p>Connect with us: 
+      <a href="https://wa.me/+6285399652487" target="_blank">WhatsApp</a> | 
+      <a href="https://web.facebook.com/gyouskill/?_rdc=1&_rdr#" target="_blank">Facebook</a>
+    </p>
   </div>
 
   <footer>
-    &copy; 2025 Gyoutrain Lab
+    &copy; 2025 GyouTrain Lab
   </footer>
 
   <script>
-    const businessWA = "+6285399652487"; // Your business WhatsApp
+    const businessWA = "+6285399652487";
 
-    // Store unlocked modules locally
+    // Predefined unique codes mapped to WhatsApp numbers
+    const validCodes = {
+      "CODE123": "+628111111111",
+      "CODE456": "+628222222222",
+      "CODE789": "+628333333333"
+    };
+
     let unlockedModules = JSON.parse(localStorage.getItem('unlockedModules') || "{}");
 
-    // Check if module already unlocked
     function unlockModule(moduleName) {
-      if (unlockedModules[moduleName]) {
-        // Already unlocked → redirect
-        redirectToModule(moduleName);
-        return;
-      }
+      if (unlockedModules[moduleName]) { redirectToModule(moduleName); return; }
 
-      // Ask user to send WhatsApp to unlock
       const confirmUnlock = confirm(`To access the "${moduleName}" module, please contact WhatsApp to unlock. Click OK to open WhatsApp message.`);
       if (!confirmUnlock) return;
 
       const waMessage = encodeURIComponent(`Hello, I want to unlock the "${moduleName}" nursing test.`);
       window.open(`https://wa.me/${businessWA}?text=${waMessage}`, "_blank");
 
-      // Prompt user to enter unlock code received via WhatsApp/OVO
-      const code = prompt("Enter the unlock code you received via WhatsApp/OVO:");
+      const userWA = prompt("Enter your WhatsApp number used to contact us (include country code, e.g., +628123456789):");
+      if (!userWA) return alert("No WhatsApp number entered. Module remains locked.");
+
+      const code = prompt("Enter the unlock code you received:");
       if (!code) return alert("No code entered. Module remains locked.");
 
-      // Verify the code (simple example: here we just check if code is "1234" for demo)
-      if (code === "1234") {
+      if (validCodes[code] === userWA) {
         unlockedModules[moduleName] = true;
         localStorage.setItem('unlockedModules', JSON.stringify(unlockedModules));
         alert("✅ Module unlocked! You can now access it.");
         redirectToModule(moduleName);
+        delete validCodes[code]; // prevent reuse
       } else {
-        alert("❌ Invalid code. Please contact WhatsApp to get the correct unlock code.");
+        alert("❌ Invalid code or WhatsApp number. Please contact us to get a valid unlock code.");
       }
     }
 
     function redirectToModule(moduleName) {
       switch(moduleName) {
-        case 'behavioral':
-          window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test-eticabehabior/';
-          break;
-        case 'criticalcare':
-          window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test-criticalcare2/';
-          break;
-        case 'maternity':
-          window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test-maternityobstetric/';
-          break;
-        case 'medicalsurgical':
-          window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test-medical-surgical/';
-          break;
-        default:
-          alert("Module not found.");
+        case 'pharmacology': window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test-pharmacology/'; break;
+        case 'fundamental': window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test/'; break;
+        case 'behavioral': window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test-eticabehabior/'; break;
+        case 'criticalcare': window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test-criticalcare2/'; break;
+        case 'maternity': window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test-maternityobstetric/'; break;
+        case 'medicalsurgical': window.location.href = 'https://gyoutrain-lab.github.io/nursing-prometric-test-medical-surgical/'; break;
+        default: alert("Module not found.");
       }
     }
   </script>
