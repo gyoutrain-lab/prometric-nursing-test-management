@@ -3,109 +3,216 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🩺 Nursing Prometric Test Hub</title>
+  <title>Nursing Prometric Test Hub</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f4f7;
-      text-align: center;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
       margin: 0;
       padding: 0;
-    }
-
-    header {
-      background-color: #003366;
-      color: white;
-      padding: 20px 10px;
-      font-size: 22px;
-      font-weight: bold;
-    }
-
-    h2 {
-      color: #003366;
-      margin: 20px 0 10px;
-    }
-
-    .button {
-      display: block;
-      width: 80%;
-      max-width: 320px;
-      margin: 10px auto;
-      padding: 14px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 16px;
-      font-weight: bold;
-      color: white;
-      transition: 0.3s ease;
-    }
-
-    .button.active {
-      background-color: #1e40af; /* Dark blue active */
-    }
-
-    .button.locked {
-      background-color: #ffb3b3; /* Pale red locked */
-      color: #fff;
-      cursor: not-allowed;
-    }
-
-    .button.active:hover {
-      background-color: #1d2d8f;
-    }
-
-    footer {
-      margin-top: 25px;
-      font-size: 14px;
       color: #333;
     }
 
-    img.icon {
-      width: 90px;
-      margin-top: 15px;
-      border-radius: 50%;
+    header {
+      background: linear-gradient(90deg, #43a047, #66bb6a);
+      color: white;
+      text-align: center;
+      padding: 20px 10px;
+      font-size: 1.4rem;
+      font-weight: bold;
+      letter-spacing: 0.5px;
     }
 
-    .red-drop {
-      width: 40px;
-      margin-top: 20px;
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .module {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      padding: 25px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .module:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    .module.locked {
+      opacity: 0.6;
+      cursor: not-allowed;
+      position: relative;
+    }
+
+    .module.locked::after {
+      content: "🔒 Locked";
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 0.8rem;
+      color: #c62828;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 10px;
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    /* Popup (modal) */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: 10% auto;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+      text-align: left;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      right: 14px;
+      top: 10px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #999;
+    }
+
+    .popup-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .popup-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .btn1 {
+      background: #43a047;
+    }
+    .btn1:hover {
+      background: #388e3c;
+    }
+
+    .btn2 {
+      background: #f9a825;
+    }
+    .btn2:hover {
+      background: #fbc02d;
     }
   </style>
 </head>
 <body>
+
   <header>🩺 Nursing Prometric Test Hub</header>
 
-  <img src="assets/icon17(1).jpg" alt="Nursing Icon" class="icon" />
-
-  <h2>Select Your Test Module</h2>
-
-  <!-- Active Module -->
-  <a href="https://gyoutrain-lab.github.io/nursing-prometric-test-pediatric/" class="button active">
-    Pediatric Nursing
-  </a>
-
-  <!-- Locked Modules -->
-  <a href="#" class="button locked" onclick="lockedMsg()">Pharmacology</a>
-  <a href="#" class="button locked" onclick="lockedMsg()">Behavioral / Ethics</a>
-  <a href="#" class="button locked" onclick="lockedMsg()">Critical Care</a>
-  <a href="#" class="button locked" onclick="lockedMsg()">Maternity & Obstetric</a>
-  <a href="#" class="button locked" onclick="lockedMsg()">Fundamental Nursing</a>
-  <a href="#" class="button locked" onclick="lockedMsg()">Medical-Surgical</a>
+  <div class="container">
+    <h2 style="text-align:center;">Select Your Test Module</h2>
+    <div class="module-grid">
+      <div class="module" onclick="window.location.href='https://gyoutrain-lab.github.io/nursing-prometric-test-pediatric/'">
+        🧒 Pediatric Nursing
+      </div>
+      <div class="module locked" onclick="openModal('Pharmacology')">
+        💊 Pharmacology
+      </div>
+      <div class="module locked" onclick="openModal('Behavioral / Ethics')">
+        ⚖️ Behavioral / Ethics
+      </div>
+      <div class="module locked" onclick="openModal('Critical Care')">
+        🏥 Critical Care
+      </div>
+      <div class="module locked" onclick="openModal('Maternity & Obstetric')">
+        🤰 Maternity & Obstetric
+      </div>
+      <div class="module locked" onclick="openModal('Fundamental Nursing')">
+        🩹 Fundamental Nursing
+      </div>
+      <div class="module locked" onclick="openModal('Medical-Surgical')">
+        🩺 Medical-Surgical
+      </div>
+    </div>
+  </div>
 
   <footer>
-    <p><strong>Nursing Excellence and Career Begin Here</strong></p>
-    <p>Connect with us:
-      <a href="https://wa.me/6285399652487" target="_blank">WhatsApp</a> |
-      <a href="#">Facebook</a>
-    </p>
-    <img src="assets/reddrop.png" alt="Red Drop" class="red-drop" />
-    <p>© 2025 GyouTrain Lab</p>
+    © 2025 GyouTrain Lab | Nursing Excellence & Career Begin Here
   </footer>
 
+  <!-- Modal -->
+  <div id="popupModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <p id="modalText"></p>
+      <div class="popup-buttons">
+        <button class="popup-btn btn1" onclick="reply(1)">Press 1</button>
+        <button class="popup-btn btn2" onclick="reply(2)">Press 2</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    function lockedMsg() {
-      alert("🔒 This module is locked.\nPlease complete the payment and send your OVO confirmation to WhatsApp +6285399652487 to unlock all modules.");
+    let selectedModule = "";
+
+    function openModal(moduleName) {
+      selectedModule = moduleName;
+      document.getElementById("modalText").innerText =
+        `Hello, I want to unlock the "${moduleName}" nursing test module.\n\nIf you agree, please transfer IDR 200k via OVO to ‪+6285399652487‬.\nAfter payment, send a message with your OVO confirmation here, and you’ll receive your unlock code.`;
+      document.getElementById("popupModal").style.display = "block";
     }
+
+    function closeModal() {
+      document.getElementById("popupModal").style.display = "none";
+      document.getElementById("modalText").innerText = "";
+    }
+
+    function reply(option) {
+      const textBox = document.getElementById("modalText");
+      if (option === 1) {
+        textBox.innerText = `Operator: Your unlock code for "${selectedModule}" is UNLOCK-2025.`;
+      } else {
+        textBox.innerText = `Operator: Your request for "${selectedModule}" is in progress. Please wait for confirmation.`;
+      }
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById("popupModal");
+      if (event.target === modal) {
+        closeModal();
+      }
+    };
   </script>
 </body>
 </html>
