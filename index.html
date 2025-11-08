@@ -14,7 +14,7 @@
       text-align: center;
     }
     .overlay {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.55);
       min-height: 100vh;
       padding: 40px 20px;
     }
@@ -38,18 +38,43 @@
       padding: 20px;
       cursor: pointer;
       transition: 0.3s;
+      font-size: 1.1rem;
     }
     .card:hover {
       background: rgba(255, 255, 255, 0.2);
     }
     .locked {
-      opacity: 0.5;
-      pointer-events: none;
+      background: rgba(255, 0, 0, 0.2);
+      border: 1px solid rgba(255, 0, 0, 0.3);
+      opacity: 0.8;
+    }
+    .locked:hover {
+      background: rgba(255, 0, 0, 0.3);
     }
     .footer {
       margin-top: 50px;
       font-size: 14px;
       color: #ccc;
+    }
+    input {
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background: #00c853;
+      color: white;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover {
+      background: #009624;
     }
   </style>
 </head>
@@ -61,36 +86,56 @@
 
     <div class="modules">
       <div class="card" onclick="openTest('pediatric')">Pediatric Nursing</div>
-      <div class="card locked" onclick="openTest('pharmacology')">Pharmacology</div>
-      <div class="card locked" onclick="openTest('behavioral')">Behavioral / Ethics</div>
-      <div class="card locked" onclick="openTest('critical')">Critical Care</div>
-      <div class="card locked" onclick="openTest('maternity')">Maternity & Obstetric</div>
-      <div class="card locked" onclick="openTest('fundamental')">Fundamental Nursing</div>
-      <div class="card locked" onclick="openTest('medical')">Medical-Surgical</div>
+      <div class="card locked" onclick="requestUnlock('pharmacology')">Pharmacology</div>
+      <div class="card locked" onclick="requestUnlock('behavioral')">Behavioral / Ethics</div>
+      <div class="card locked" onclick="requestUnlock('critical')">Critical Care</div>
+      <div class="card locked" onclick="requestUnlock('maternity')">Maternity & Obstetric</div>
+      <div class="card locked" onclick="requestUnlock('fundamental')">Fundamental Nursing</div>
+      <div class="card locked" onclick="requestUnlock('medical')">Medical-Surgical</div>
+    </div>
+
+    <div id="unlockForm" style="display:none; margin-top:30px;">
+      <h3>Enter your WhatsApp number used to contact us (include +):</h3>
+      <input type="text" id="waNumber" placeholder="+62XXXXXXXXXX" />
+      <button onclick="sendUnlockRequest()">Send Request</button>
     </div>
 
     <div class="footer">
       <p>Nursing Excellence and Career Begin Here</p>
-      <p>Connect with us: <a href="https://wa.me/6285399652487?text=Hello, I%20want%20to%20unlock%20a%20test%20module" target="_blank" style="color: #80dfff;">WhatsApp</a></p>
+      <p>Connect with us: <a href="https://wa.me/6285399652487" target="_blank" style="color: #80dfff;">WhatsApp</a></p>
       <p>© 2025 GyouTrain Lab</p>
     </div>
   </div>
 
   <script>
-    // only Pediatric unlocked
+    let selectedModule = "";
+
     function openTest(module) {
+      // only Pediatric is unlocked
       if (module === "pediatric") {
         window.location.href = "https://gyoutrain-lab.github.io/prometric-nursing-test/";
+      }
+    }
+
+    function requestUnlock(module) {
+      selectedModule = module;
+      document.getElementById("unlockForm").style.display = "block";
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function sendUnlockRequest() {
+      const wa = document.getElementById("waNumber").value.trim();
+      if (!wa.startsWith("+")) {
+        alert("Please include country code (e.g. +6285399652487)");
         return;
       }
-
-      // for locked modules
-      if (confirm(`"${module.toUpperCase()}" is locked.\nTo unlock, please contact via WhatsApp.`)) {
-        const msg = encodeURIComponent(
-          `Hello, I want to unlock the "${module}" nursing test module.\n\nIf you agree, please send IDR 200k to OVO 085399652487.\nAfter payment, you will receive an unlock code here.`
-        );
-        window.open(`https://wa.me/6285399652487?text=${msg}`, "_blank");
-      }
+      const msg = encodeURIComponent(
+        `Hello Admin,\n\nYou've got one module request: "${selectedModule.toUpperCase()}".\n\nThe user is about to customize the next Nursing Prometric Simulation Test Hub.\n\nPlease wait for the code to unlock after payment. The user will send the OVO payment receipt soon.`
+      );
+      window.open(`https://wa.me/6285399652487?text=${msg}`, "_blank");
+      alert("Your unlock request has been sent. Please wait for confirmation via WhatsApp.");
+      document.getElementById("unlockForm").style.display = "none";
+      document.getElementById("waNumber").value = "";
     }
   </script>
 </body>
