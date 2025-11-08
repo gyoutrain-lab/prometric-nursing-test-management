@@ -3,140 +3,190 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🩺 Nursing Prometric Test Hub</title>
-  <link rel="manifest" href="manifest.json" />
+  <title>Nursing Prometric Test Hub</title>
   <style>
     body {
-      margin: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: url("assets/water-drop-bg.jpg") no-repeat center center/cover;
-      color: white;
+      font-family: "Arial", sans-serif;
       text-align: center;
-    }
-    .overlay {
-      background: rgba(0, 0, 0, 0.55);
-      min-height: 100vh;
-      padding: 40px 20px;
+      background: url("water-drop-bg.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      margin: 0;
+      padding: 0;
     }
     h1 {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-    h2 {
-      font-weight: 400;
-      color: #e0e0e0;
-    }
-    .modules {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
+      font-size: 1.8em;
       margin-top: 40px;
     }
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 20px;
-      cursor: pointer;
-      transition: 0.3s;
-      font-size: 1.1rem;
+    h2 {
+      font-weight: normal;
+      margin-bottom: 25px;
+      color: #e0f7fa;
     }
-    .card:hover {
-      background: rgba(255, 255, 255, 0.2);
+    .module-btn {
+      display: block;
+      width: 80%;
+      max-width: 350px;
+      margin: 10px auto;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1em;
+      color: white;
+      background-color: #004d99; /* active blue */
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .module-btn:hover {
+      transform: scale(1.05);
     }
     .locked {
-      background: rgba(255, 0, 0, 0.2);
-      border: 1px solid rgba(255, 0, 0, 0.3);
-      opacity: 0.8;
-    }
-    .locked:hover {
-      background: rgba(255, 0, 0, 0.3);
+      background-color: #b33a3a; /* pale red */
+      cursor: not-allowed;
+      opacity: 0.7;
     }
     .footer {
-      margin-top: 50px;
-      font-size: 14px;
-      color: #ccc;
+      margin-top: 30px;
+      font-size: 0.9em;
     }
-    input {
-      margin-top: 10px;
-      padding: 8px;
-      border-radius: 8px;
-      border: none;
-      font-size: 1rem;
+    .footer a {
+      color: #00e676;
+      text-decoration: none;
+      margin: 0 5px;
     }
-    button {
-      margin-top: 10px;
-      padding: 10px 16px;
-      border: none;
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    .modal-content {
+      background: #fff;
+      color: #333;
+      padding: 20px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      text-align: left;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
       border-radius: 8px;
-      background: #00c853;
+      border: 1px solid #ccc;
+      margin: 10px 0;
+    }
+    button.modal-btn {
+      background: #004d99;
       color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 1rem;
-    }
-    button:hover {
-      background: #009624;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="overlay">
-    <img src="assets/icon17 (1).jpg" alt="Icon" width="80" style="border-radius:50%; margin-bottom:10px;" />
-    <h1>🩺 Nursing Prometric Test Hub</h1>
-    <h2>Select Your Test Module</h2>
 
-    <div class="modules">
-      <div class="card" onclick="openTest('pediatric')">Pediatric Nursing</div>
-      <div class="card locked" onclick="requestUnlock('pharmacology')">Pharmacology</div>
-      <div class="card locked" onclick="requestUnlock('behavioral')">Behavioral / Ethics</div>
-      <div class="card locked" onclick="requestUnlock('critical')">Critical Care</div>
-      <div class="card locked" onclick="requestUnlock('maternity')">Maternity & Obstetric</div>
-      <div class="card locked" onclick="requestUnlock('fundamental')">Fundamental Nursing</div>
-      <div class="card locked" onclick="requestUnlock('medical')">Medical-Surgical</div>
+  <h1>🩺 Nursing Prometric Test Hub</h1>
+  <h2>Select Your Test Module</h2>
+
+  <button class="module-btn" onclick="startTest('pediatric')">Pediatric Nursing</button>
+  <button class="module-btn locked" onclick="requestUnlock('pharmacology')">Pharmacology</button>
+  <button class="module-btn locked" onclick="requestUnlock('behavioral')">Behavioral / Ethics</button>
+  <button class="module-btn locked" onclick="requestUnlock('criticalcare')">Critical Care</button>
+  <button class="module-btn locked" onclick="requestUnlock('maternity')">Maternity & Obstetric</button>
+  <button class="module-btn locked" onclick="requestUnlock('fundamental')">Fundamental Nursing</button>
+  <button class="module-btn locked" onclick="requestUnlock('medsurg')">Medical-Surgical</button>
+
+  <div class="footer">
+    <p>Nursing Excellence and Career Begin Here</p>
+    <p>Connect with us:
+      <a href="https://wa.me/6285399652487?text=Hello%20I%20want%20to%20unlock%20Nursing%20Prometric%20Test">WhatsApp</a> |
+      <a href="#">Facebook</a>
+    </p>
+    <p>© 2025 GyouTrain Lab</p>
+  </div>
+
+  <div class="modal" id="unlockModal">
+    <div class="modal-content">
+      <h3>Unlock Test Module</h3>
+      <p>Enter your WhatsApp number used to contact us (include +):</p>
+      <input type="text" id="whatsappNumber" placeholder="+628xxxxxxx">
+      <button class="modal-btn" onclick="sendUnlockRequest()">Submit</button>
     </div>
+  </div>
 
-    <div id="unlockForm" style="display:none; margin-top:30px;">
-      <h3>Enter your WhatsApp number used to contact us (include +):</h3>
-      <input type="text" id="waNumber" placeholder="+62XXXXXXXXXX" />
-      <button onclick="sendUnlockRequest()">Send Request</button>
-    </div>
-
-    <div class="footer">
-      <p>Nursing Excellence and Career Begin Here</p>
-      <p>Connect with us: <a href="https://wa.me/6285399652487" target="_blank" style="color: #80dfff;">WhatsApp</a></p>
-      <p>© 2025 GyouTrain Lab</p>
+  <div class="modal" id="codeModal">
+    <div class="modal-content">
+      <h3>Enter Unlock Code</h3>
+      <p>After payment via OVO to <b>+6285399652487</b>, you'll receive a code on WhatsApp.</p>
+      <input type="text" id="unlockCode" placeholder="Enter code here">
+      <button class="modal-btn" onclick="verifyCode()">Unlock Now</button>
     </div>
   </div>
 
   <script>
+    const unlockModal = document.getElementById("unlockModal");
+    const codeModal = document.getElementById("codeModal");
     let selectedModule = "";
 
-    function openTest(module) {
-      // only Pediatric is unlocked
-      if (module === "pediatric") {
-        window.location.href = "https://gyoutrain-lab.github.io/prometric-nursing-test/";
-      }
+    function startTest(module) {
+      window.location.href = `${module}.html`;
     }
 
     function requestUnlock(module) {
       selectedModule = module;
-      document.getElementById("unlockForm").style.display = "block";
-      window.scrollTo(0, document.body.scrollHeight);
+      unlockModal.style.display = "flex";
     }
 
     function sendUnlockRequest() {
-      const wa = document.getElementById("waNumber").value.trim();
-      if (!wa.startsWith("+")) {
-        alert("Please include country code (e.g. +6285399652487)");
+      const number = document.getElementById("whatsappNumber").value.trim();
+      if (!number.startsWith("+")) {
+        alert("Please include country code, e.g., +628...");
         return;
       }
-      const msg = encodeURIComponent(
-        `Hello Admin,\n\nYou've got one module request: "${selectedModule.toUpperCase()}".\n\nThe user is about to customize the next Nursing Prometric Simulation Test Hub.\n\nPlease wait for the code to unlock after payment. The user will send the OVO payment receipt soon.`
+      const message = encodeURIComponent(
+        `You've got one module reserved for ${selectedModule.toUpperCase()}.\nIf you agree, transfer IDR 200k via OVO to +6285399652487.\nAfter payment, you'll get your unlock code via WhatsApp.\nSend your OVO confirmation message here when ready.`
       );
-      window.open(`https://wa.me/6285399652487?text=${msg}`, "_blank");
-      alert("Your unlock request has been sent. Please wait for confirmation via WhatsApp.");
-      document.getElementById("unlockForm").style.display = "none";
-      document.getElementById("waNumber").value = "";
+      window.open(`https://wa.me/6285399652487?text=${message}`, "_blank");
+      unlockModal.style.display = "none";
+      codeModal.style.display = "flex";
+    }
+
+    function verifyCode() {
+      const code = document.getElementById("unlockCode").value.trim();
+      const validCode = "NURSE2025"; // temporary static code
+      if (code === validCode) {
+        localStorage.setItem(`${selectedModule}_unlocked`, "true");
+        alert("✅ Module unlocked! You can now start the test.");
+        codeModal.style.display = "none";
+        document.querySelectorAll(".module-btn").forEach(btn => {
+          if (btn.textContent.toLowerCase().includes(selectedModule)) {
+            btn.classList.remove("locked");
+            btn.style.backgroundColor = "#004d99";
+            btn.onclick = () => startTest(selectedModule);
+          }
+        });
+      } else {
+        alert("❌ Invalid unlock code. Please check your WhatsApp message.");
+      }
+    }
+
+    // Relock after all modules used
+    const allModules = ["pediatric", "pharmacology", "behavioral", "criticalcare", "maternity", "fundamental", "medsurg"];
+    if (allModules.every(m => localStorage.getItem(`${m}_unlocked`) === "true")) {
+      allModules.forEach(m => {
+        localStorage.removeItem(`${m}_unlocked`);
+        location.reload();
+      });
     }
   </script>
+
 </body>
 </html>
