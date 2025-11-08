@@ -1,192 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nursing Prometric Test Hub</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🩺 Nursing Prometric Test Hub</title>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: url("assets/water-drop-bg.jpg") no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
+      background-color: #f2f4f7;
       text-align: center;
+      margin: 0;
+      padding: 0;
     }
 
-    .container {
-      background: rgba(0, 0, 0, 0.6);
-      margin: 20px;
-      padding: 20px;
-      border-radius: 20px;
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 20px 10px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    h2 {
+      color: #003366;
+      margin: 20px 0 10px;
+    }
+
+    .button {
+      display: block;
+      width: 80%;
+      max-width: 320px;
+      margin: 10px auto;
+      padding: 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      transition: 0.3s ease;
+    }
+
+    .button.active {
+      background-color: #1e40af; /* Dark blue active */
+    }
+
+    .button.locked {
+      background-color: #ffb3b3; /* Pale red locked */
+      color: #fff;
+      cursor: not-allowed;
+    }
+
+    .button.active:hover {
+      background-color: #1d2d8f;
+    }
+
+    footer {
+      margin-top: 25px;
+      font-size: 14px;
+      color: #333;
     }
 
     img.icon {
       width: 90px;
-      height: 90px;
-      border-radius: 50%;
       margin-top: 15px;
+      border-radius: 50%;
     }
 
-    h1 {
-      font-size: 1.8em;
-      color: #ff4f4f;
-      margin: 10px 0;
-    }
-
-    h2 {
-      font-size: 1.2em;
-      margin: 10px 0 25px 0;
-      color: #fff;
-    }
-
-    button {
-      display: block;
-      width: 80%;
-      margin: 10px auto;
-      padding: 15px;
-      font-size: 1.1em;
-      font-weight: bold;
-      color: white;
-      background-color: #0052cc;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #003d99;
-    }
-
-    button.locked {
-      background-color: #b34d4d; /* pale red */
-      cursor: not-allowed;
-      opacity: 0.7;
-    }
-
-    .footer {
+    .red-drop {
+      width: 40px;
       margin-top: 20px;
-      font-size: 0.9em;
-    }
-
-    a {
-      color: #ffd6d6;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .unlock-box {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 20px;
-    }
-
-    input {
-      padding: 8px;
-      width: 70%;
-      border-radius: 8px;
-      border: none;
-      font-size: 1em;
-    }
-
-    .unlock-btn {
-      background-color: #00a859;
-      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <img src="assets/icon17 (1).jpg" alt="Icon" class="icon">
-    <h1>🩺 Nursing Prometric Test Hub</h1>
-    <h2>Select Your Test Module</h2>
+  <header>🩺 Nursing Prometric Test Hub</header>
 
-    <!-- Active / Unlocked -->
-    <button onclick="openModule('https://gyoutrain-lab.github.io/nursing-prometric-test-pediatric/')">
-      Pediatric Nursing
-    </button>
+  <img src="assets/icon17(1).jpg" alt="Nursing Icon" class="icon" />
 
-    <!-- Locked Modules -->
-    <button class="locked" onclick="requestUnlock('Pharmacology')">Pharmacology</button>
-    <button class="locked" onclick="requestUnlock('Behavioral / Ethics')">Behavioral / Ethics</button>
-    <button class="locked" onclick="requestUnlock('Critical Care')">Critical Care</button>
-    <button class="locked" onclick="requestUnlock('Maternity & Obstetric')">Maternity & Obstetric</button>
-    <button class="locked" onclick="requestUnlock('Fundamental Nursing')">Fundamental Nursing</button>
-    <button class="locked" onclick="requestUnlock('Medical-Surgical')">Medical-Surgical</button>
+  <h2>Select Your Test Module</h2>
 
-    <div class="unlock-box">
-      <p><strong>Have you received an unlock code?</strong></p>
-      <input type="text" id="unlockCode" placeholder="Enter your unlock code">
-      <button class="unlock-btn" onclick="unlockModules()">Unlock Modules</button>
-    </div>
+  <!-- Active Module -->
+  <a href="https://gyoutrain-lab.github.io/nursing-prometric-test-pediatric/" class="button active">
+    Pediatric Nursing
+  </a>
 
-    <div class="footer">
-      <p>Nursing Excellence and Career Begin Here</p>
-      <p>Connect with us:
-        <a href="https://wa.me/6285399652487?text=Hello%20I%20want%20to%20unlock%20the%20Nursing%20Test%20modules%20please.">WhatsApp</a> |
-        <a href="#">Facebook</a>
-      </p>
-      <p>© 2025 GyouTrain Lab</p>
-    </div>
-  </div>
+  <!-- Locked Modules -->
+  <a href="#" class="button locked" onclick="lockedMsg()">Pharmacology</a>
+  <a href="#" class="button locked" onclick="lockedMsg()">Behavioral / Ethics</a>
+  <a href="#" class="button locked" onclick="lockedMsg()">Critical Care</a>
+  <a href="#" class="button locked" onclick="lockedMsg()">Maternity & Obstetric</a>
+  <a href="#" class="button locked" onclick="lockedMsg()">Fundamental Nursing</a>
+  <a href="#" class="button locked" onclick="lockedMsg()">Medical-Surgical</a>
+
+  <footer>
+    <p><strong>Nursing Excellence and Career Begin Here</strong></p>
+    <p>Connect with us:
+      <a href="https://wa.me/6285399652487" target="_blank">WhatsApp</a> |
+      <a href="#">Facebook</a>
+    </p>
+    <img src="assets/reddrop.png" alt="Red Drop" class="red-drop" />
+    <p>© 2025 GyouTrain Lab</p>
+  </footer>
 
   <script>
-    function openModule(url) {
-      window.location.href = url;
-    }
-
-    function requestUnlock(moduleName) {
-      const message =
-        `Hello, I want to unlock the "${moduleName}" nursing test module.\n\n` +
-        `If you agree, please transfer *IDR 200k* via OVO to +6285399652487.\n` +
-        `After payment, send a message with your OVO confirmation here, and you’ll receive your unlock code.`;
-      const waUrl = `https://wa.me/6285399652487?text=${encodeURIComponent(message)}`;
-      window.open(waUrl, '_blank');
-    }
-
-    function unlockModules() {
-      const code = document.getElementById("unlockCode").value.trim();
-      // Example simple check (replace later with real system)
-      if (code === "GYOU2025PASS") {
-        document.querySelectorAll(".locked").forEach(btn => {
-          btn.classList.remove("locked");
-          btn.style.backgroundColor = "#0052cc";
-          btn.style.cursor = "pointer";
-          btn.onclick = function() {
-            const name = this.innerText.trim();
-            let target = "";
-            switch (name) {
-              case "Pharmacology":
-                target = "https://gyoutrain-lab.github.io/nursing-prometric-test-pharmacology/";
-                break;
-              case "Behavioral / Ethics":
-                target = "https://gyoutrain-lab.github.io/nursing-prometric-test-eticabehabior/";
-                break;
-              case "Critical Care":
-                target = "https://gyoutrain-lab.github.io/nursing-prometric-test-criticalcare2/";
-                break;
-              case "Maternity & Obstetric":
-                target = "https://gyoutrain-lab.github.io/nursing-prometric-test-maternityobstetric/";
-                break;
-              case "Fundamental Nursing":
-                target = "https://gyoutrain-lab.github.io/nursing-prometric-test/";
-                break;
-              case "Medical-Surgical":
-                target = "https://gyoutrain-lab.github.io/nursing-prometric-test-medical-surgical/";
-                break;
-            }
-            if (target) window.location.href = target;
-          };
-        });
-        alert("✅ Modules successfully unlocked!");
-      } else {
-        alert("❌ Invalid code. Please contact support.");
-      }
+    function lockedMsg() {
+      alert("🔒 This module is locked.\nPlease complete the payment and send your OVO confirmation to WhatsApp +6285399652487 to unlock all modules.");
     }
   </script>
 </body>
